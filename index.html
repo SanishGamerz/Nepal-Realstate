@@ -3,9 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GharGhaderi Nepal | Tech-Enabled Real Estate Platform</title>
-    
-    <!-- Tailwind CSS -->
+    <title>GharGhaderi Nepal Portal - Trending Real Estate & AI Assistant</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -14,1079 +12,1070 @@
                 extend: {
                     colors: {
                         brand: {
-                            50: '#eff6ff',
-                            100: '#dbeafe',
-                            500: '#3b82f6',
-                            600: '#2563eb',
-                            700: '#1d4ed8',
-                            800: '#1e40af',
-                            900: '#1e3a8a',
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                            900: '#14532d',
                         },
-                        nepal: {
-                            crimson: '#DC143C',
-                            navy: '#002147'
+                        accent: {
+                            500: '#ef4444',
+                            600: '#dc2626'
                         }
                     }
                 }
             }
         }
     </script>
-    
-    <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Chart.js for Market Analytics -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-        body { font-family: 'Inter', sans-serif; }
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(12px);
-        }
-        .dark .glass-panel {
-            background: rgba(15, 23, 42, 0.85);
-            backdrop-filter: blur(12px);
-        }
-        /* Custom scrollbars */
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
-        .dark ::-webkit-scrollbar-thumb { background: #334155; }
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Mukta:wght@400;500;600;700&display=swap');
+        body { font-family: 'Plus Jakarta Sans', 'Mukta', sans-serif; }
+        .scrollbar-thin::-webkit-scrollbar { width: 6px; height: 6px; }
+        .scrollbar-thin::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .dark .scrollbar-thin::-webkit-scrollbar-thumb { background: #475569; }
     </style>
 </head>
-<body class="bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 min-h-screen flex flex-col transition-colors duration-200">
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 min-h-screen transition-colors duration-200">
 
-    <!-- Navigation Bar -->
-    <header class="sticky top-0 z-40 w-full border-b border-slate-200 dark:border-slate-800 glass-panel">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-16 gap-2">
-                
-                <!-- Logo -->
-                <div class="flex items-center gap-3 cursor-pointer" onclick="filterCategory('all')">
-                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-nepal-crimson to-rose-500 flex items-center justify-center text-white shadow-md shadow-rose-500/20">
-                        <i class="fa-solid fa-house-flag text-xl"></i>
-                    </div>
-                    <div>
-                        <span class="text-xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-nepal-crimson to-nepal-navy dark:from-rose-400 dark:to-blue-400">
-                            GharGhaderi
-                        </span>
-                        <span class="text-xs text-rose-600 font-semibold block -mt-1 tracking-widest uppercase">Nepal</span>
-                    </div>
-                </div>
-
-                <!-- Navigation Links (Desktop) -->
-                <nav class="hidden md:flex items-center gap-1 text-sm font-medium">
-                    <button onclick="filterCategory('all')" id="nav-all" class="px-3 py-2 rounded-lg text-brand-600 bg-brand-50 dark:bg-brand-950/50 font-semibold transition-all">All Listings</button>
-                    <button onclick="filterCategory('ghaderi')" id="nav-ghaderi" class="px-3 py-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all">Ghaderi Plots</button>
-                    <button onclick="filterCategory('house')" id="nav-house" class="px-3 py-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all">Houses & Villas</button>
-                    <button onclick="filterCategory('commercial')" id="nav-commercial" class="px-3 py-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all">Commercial</button>
-                </nav>
-
-                <!-- Actions & Toggles -->
-                <div class="flex items-center gap-2">
-                    <!-- Unit System Toggle -->
-                    <button id="unitToggleBtn" onclick="toggleUnitSystem()" class="px-2.5 py-1.5 rounded-lg border border-slate-200 dark:border-slate-800 text-xs font-semibold hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center gap-1.5 transition-all">
-                        <i class="fa-solid fa-ruler-combined text-slate-400"></i>
-                        <span id="unitText">Hills (R-A-P-D)</span>
-                    </button>
-
-                    <!-- Dark Mode Toggle -->
-                    <button onclick="toggleDarkMode()" class="w-9 h-9 rounded-lg border border-slate-200 dark:border-slate-800 flex items-center justify-center hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 transition-all">
-                        <i class="fa-solid fa-moon dark:hidden"></i>
-                        <i class="fa-solid fa-sun hidden dark:block text-amber-400"></i>
-                    </button>
-
-                    <!-- Language Toggle -->
-                    <button id="langToggleBtn" onclick="toggleLanguage()" class="px-2.5 py-1.5 rounded-lg border border-slate-200 dark:border-slate-800 text-xs font-semibold hover:bg-slate-100 dark:hover:bg-slate-800 transition-all">
-                        <span id="langText">नेपाली</span>
-                    </button>
-
-                    <!-- Auth Button / Avatar -->
-                    <div id="authContainer">
-                        <button onclick="openAuthModal()" class="px-3 py-1.5 rounded-lg border border-brand-500 text-brand-600 dark:text-brand-400 text-xs font-bold hover:bg-brand-50 dark:hover:bg-brand-950 transition-all">
-                            <i class="fa-solid fa-user mr-1"></i> <span data-i18n="signin">Sign In</span>
-                        </button>
-                    </div>
-
-                    <!-- Post Property Button -->
-                    <button onclick="openPostModal()" class="px-3 py-1.5 rounded-lg bg-nepal-crimson hover:bg-rose-700 text-white text-xs font-bold shadow-md shadow-rose-500/20 flex items-center gap-1.5 transition-all">
-                        <i class="fa-solid fa-plus"></i>
-                        <span class="hidden sm:inline" data-i18n="postListing">Post Property</span>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </header>
-
-    <section class="bg-gradient-to-b from-slate-100 to-slate-50 dark:from-slate-900 dark:to-slate-950 py-10 px-4 border-b border-slate-200 dark:border-slate-800">
-        <div class="max-w-5xl mx-auto text-center">
-            <span class="px-3 py-1 rounded-full text-xs font-semibold bg-rose-100 text-rose-700 dark:bg-rose-950/60 dark:text-rose-300 inline-block mb-3">
-                <i class="fa-solid fa-shield-halved mr-1"></i> Verified Cadastral Maps & Malpot Valuation
-            </span>
-            <h1 class="text-3xl sm:text-5xl font-black text-slate-900 dark:text-white tracking-tight mb-4">
-                Find Ghaderi, Houses & Land Across Nepal
-            </h1>
-            <p class="text-slate-600 dark:text-slate-400 text-sm sm:text-base max-w-2xl mx-auto mb-8">
-                Verified listings with Kitta Numbers (कि.नं.), direct seller negotiations, official Malpot tax calculator, and AI guidance.
-            </p>
-
-            <!-- Search Bar Form -->
-            <div class="bg-white dark:bg-slate-900 p-3 sm:p-4 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-800 flex flex-col md:flex-row gap-3">
-                <div class="flex-1 flex items-center gap-2 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 bg-slate-50 dark:bg-slate-800">
-                    <i class="fa-solid fa-location-dot text-rose-500"></i>
-                    <input type="text" id="searchInput" placeholder="Search District, Municipality, Ward or Kitta No..." class="w-full bg-transparent text-xs sm:text-sm focus:outline-none dark:text-white">
-                </div>
-                <div class="flex gap-2">
-                    <select id="categoryFilter" onchange="applyFilters()" class="bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs sm:text-sm rounded-xl px-3 py-2 dark:text-white focus:outline-none">
-                        <option value="all">All Types</option>
-                        <option value="ghaderi">Ghaderi Plot</option>
-                        <option value="house">House / Villa</option>
-                        <option value="commercial">Commercial Land</option>
-                    </select>
-                    <select id="sortFilter" onchange="applyFilters()" class="bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs sm:text-sm rounded-xl px-3 py-2 dark:text-white focus:outline-none">
-                        <option value="featured">Sort: Featured</option>
-                        <option value="low-high">Price: Low to High</option>
-                        <option value="high-low">Price: High to Low</option>
-                    </select>
-                    <button onclick="applyFilters()" class="bg-brand-600 hover:bg-brand-700 text-white px-5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all">
-                        <i class="fa-solid fa-magnifying-glass mr-1"></i> Search
-                    </button>
-                </div>
-            </div>
-
-            <!-- Utility Quick Bar -->
-            <div class="flex flex-wrap items-center justify-center gap-3 mt-6 text-xs font-medium">
-                <button onclick="openCalcModal()" class="px-3 py-1.5 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm hover:border-brand-500 text-slate-700 dark:text-slate-300 transition-all flex items-center gap-1.5">
-                    <i class="fa-solid fa-calculator text-brand-500"></i> Malpot CGT & Registration Calculator
-                </button>
-                <button onclick="openConverterModal()" class="px-3 py-1.5 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm hover:border-brand-500 text-slate-700 dark:text-slate-300 transition-all flex items-center gap-1.5">
-                    <i class="fa-solid fa-scale-balanced text-emerald-500"></i> Land Unit Converter (Ropani/Bigha)
-                </button>
-                <button onclick="openDevApiModal()" class="px-3 py-1.5 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm hover:border-brand-500 text-slate-700 dark:text-slate-300 transition-all flex items-center gap-1.5">
-                    <i class="fa-solid fa-code text-violet-500"></i> Developer API & Sandbox
-                </button>
-            </div>
-        </div>
-    </section>
-
-    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        
-        <!-- Section Header -->
-        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-2">
-            <div>
-                <h2 class="text-xl font-bold text-slate-900 dark:text-white" id="gridTitle">Featured Properties in Nepal</h2>
-                <p class="text-xs text-slate-500 dark:text-slate-400">Direct listings with verified titles & official rates</p>
-            </div>
-            <div id="listingCount" class="text-xs font-semibold text-slate-500 bg-slate-200 dark:bg-slate-800 px-3 py-1 rounded-full">
-                Showing properties
-            </div>
-        </div>
-
-        <!-- Property Grid -->
-        <div id="propertyGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <!-- Dynamic Property Cards Injected Here -->
-        </div>
-
-        <!-- Market Analytics Banner -->
-        <section class="mt-12 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm">
-            <div class="flex flex-col lg:flex-row gap-6 items-center">
-                <div class="lg:w-1/3">
-                    <span class="text-xs font-bold text-brand-600 uppercase tracking-widest">Market Insights</span>
-                    <h3 class="text-xl font-black text-slate-900 dark:text-white mt-1">Land Price Index in Nepal (2020 - 2026)</h3>
-                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-2">Historical price trends per Aana/Katha across Kathmandu Valley, Pokhara, and Chitwan hubs.</p>
-                    <div class="mt-4 flex items-center gap-2 text-xs font-medium text-emerald-600 dark:text-emerald-400">
-                        <i class="fa-solid fa-arrow-trend-up"></i> Average Annual Growth: +12.4% YoY
-                    </div>
-                </div>
-                <div class="lg:w-2/3 w-full h-64">
-                    <canvas id="marketChart"></canvas>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <!-- Floating AI Widget Trigger -->
-    <div class="fixed bottom-6 right-6 z-40">
-        <button onclick="toggleAiDrawer()" class="group relative flex items-center gap-2 bg-gradient-to-r from-brand-600 to-indigo-600 hover:from-brand-700 hover:to-indigo-700 text-white font-semibold px-4 py-3 rounded-full shadow-2xl shadow-brand-500/40 transition-all duration-300 transform hover:scale-105">
-            <i class="fa-solid fa-wand-magic-sparkles text-lg animate-pulse"></i>
-            <span class="text-xs sm:text-sm">GharGhaderi AI Assistant</span>
-            <span class="absolute -top-1 -right-1 flex h-3 w-3">
-                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
-            </span>
-        </button>
-    </div>
-
-    <!-- AI Assistant Drawer -->
-    <div id="aiDrawer" class="fixed inset-y-0 right-0 w-full sm:w-96 bg-white dark:bg-slate-900 shadow-2xl z-50 transform translate-x-full transition-transform duration-300 ease-in-out border-l border-slate-200 dark:border-slate-800 flex flex-col">
-        <!-- AI Drawer Header -->
-        <div class="p-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between bg-slate-50 dark:bg-slate-800/50">
-            <div class="flex items-center gap-3">
-                <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-brand-600 to-indigo-600 flex items-center justify-center text-white shadow-md">
-                    <i class="fa-solid fa-robot"></i>
+<header class="sticky top-0 z-40 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16">
+            <!-- Logo -->
+            <div class="flex items-center space-x-3 cursor-pointer" onclick="setActiveTab('home')">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-600 to-green-400 flex items-center justify-center text-white shadow-lg shadow-emerald-500/20">
+                    <i class="fa-solid font-bold fa-house-flag text-xl"></i>
                 </div>
                 <div>
-                    <h3 class="text-sm font-bold text-slate-900 dark:text-white">GharGhaderi AI</h3>
-                    <p class="text-[10px] text-emerald-600 font-medium flex items-center gap-1">
-                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Gemini 3 Flash Powered
+                    <span class="text-xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-emerald-600 to-teal-600 dark:from-emerald-400 dark:to-teal-300">GharGhaderi</span>
+                    <span class="text-xs block text-slate-500 dark:text-slate-400 -mt-1 tracking-widest uppercase font-semibold">Nepal Portal</span>
+                </div>
+            </div>
+
+            <!-- Central Quick Nav (Desktop) -->
+            <nav class="hidden md:flex space-x-1 font-medium text-sm">
+                <button onclick="setActiveTab('home')" id="nav-home" class="px-3 py-2 rounded-lg text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/50">
+                    <i class="fa-solid fa-compass mr-1.5"></i><span data-i18n="nav_explore">Explore</span>
+                </button>
+                <button onclick="openModal('converterModal')" class="px-3 py-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+                    <i class="fa-solid fa-calculator mr-1.5 text-emerald-500"></i><span data-i18n="nav_converter">Land Converter</span>
+                </button>
+                <button onclick="openModal('taxModal')" class="px-3 py-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+                    <i class="fa-solid fa-coins mr-1.5 text-amber-500"></i><span data-i18n="nav_tax">Tax & Fees</span>
+                </button>
+                <button onclick="openModal('kittaModal')" class="px-3 py-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+                    <i class="fa-solid fa-map-location-dot mr-1.5 text-blue-500"></i><span data-i18n="nav_kitta">Kitta Check</span>
+                </button>
+            </nav>
+
+            <!-- Actions Right -->
+            <div class="flex items-center space-x-2 sm:space-x-3">
+                <!-- Lang Toggle Button -->
+                <button onclick="toggleLanguage()" class="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-100/80 dark:bg-slate-800/80 hover:bg-slate-200 dark:hover:bg-slate-700 text-xs font-semibold transition">
+                    <i class="fa-solid fa-language text-emerald-600 dark:text-emerald-400 text-sm"></i>
+                    <span id="lang-label">English</span>
+                </button>
+
+                <!-- Dark Mode Toggle -->
+                <button onclick="toggleDarkMode()" class="p-2 rounded-lg border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+                    <i id="theme-icon" class="fa-solid fa-moon"></i>
+                </button>
+
+                <!-- Auth Buttons -->
+                <div id="auth-container">
+                    <button onclick="openModal('authModal')" class="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white px-4 py-2 rounded-lg font-semibold text-xs sm:text-sm shadow-md shadow-emerald-600/20 transition flex items-center space-x-1">
+                        <i class="fa-solid fa-user-circle"></i>
+                        <span data-i18n="btn_login">Sign In</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8">
+    <div class="relative rounded-3xl overflow-hidden bg-gradient-to-r from-slate-900 via-teal-950 to-slate-900 text-white p-6 sm:p-10 shadow-2xl border border-slate-800">
+        <div class="relative z-10 max-w-3xl">
+            <span class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-xs font-medium mb-3">
+                <i class="fa-solid fa-fire text-amber-400"></i>
+                <span data-i18n="hero_badge">#1 TikTok & Local Trending Portal Nepal</span>
+            </span>
+            <h1 class="text-2xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight leading-tight" data-i18n="hero_title">
+                Find Authentic Ghaderi & Homes Directly From Owners
+            </h1>
+            <p class="mt-3 text-slate-300 text-sm sm:text-base leading-relaxed" data-i18n="hero_sub">
+                Explore real verified land listings across Kathmandu, Pokhara, Chitwan, Lalitpur, Bhaktapur & Itahari. Calculate Malpot tax, convert units instantly, and chat with AI.
+            </p>
+
+            <!-- Search Bar -->
+            <div class="mt-6 bg-white dark:bg-slate-900 p-2.5 rounded-2xl shadow-xl flex flex-col md:flex-row gap-2 border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-100">
+                <div class="flex-1 flex items-center px-3 bg-slate-50 dark:bg-slate-800 rounded-xl">
+                    <i class="fa-solid fa-magnifying-glass text-slate-400 mr-2"></i>
+                    <input type="text" id="searchInput" onkeyup="applyFilters()" placeholder="Search location, #hashtag, owner name..." class="w-full py-2.5 bg-transparent border-none focus:outline-none text-sm placeholder-slate-400">
+                </div>
+                <div class="flex gap-2">
+                    <select id="cityFilter" onchange="applyFilters()" class="bg-slate-50 dark:bg-slate-800 px-3 py-2.5 rounded-xl text-sm border-none focus:outline-none font-medium cursor-pointer">
+                        <option value="all" data-i18n="filter_all_cities">All Cities / Hubs</option>
+                        <option value="Kathmandu">Kathmandu</option>
+                        <option value="Lalitpur">Lalitpur</option>
+                        <option value="Pokhara">Pokhara</option>
+                        <option value="Chitwan">Chitwan/Bharatpur</option>
+                        <option value="Bhaktapur">Bhaktapur</option>
+                        <option value="Itahari">Itahari</option>
+                        <option value="Butwal">Butwal</option>
+                    </select>
+                    <select id="typeFilter" onchange="applyFilters()" class="bg-slate-50 dark:bg-slate-800 px-3 py-2.5 rounded-xl text-sm border-none focus:outline-none font-medium cursor-pointer">
+                        <option value="all" data-i18n="filter_all_types">All Types</option>
+                        <option value="Land" data-i18n="filter_ghaderi">Ghaderi / Land</option>
+                        <option value="House" data-i18n="filter_house">House / Villa</option>
+                        <option value="Commercial" data-i18n="filter_commercial">Commercial Plot</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="flex flex-wrap items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-800 pb-4">
+        <div class="flex flex-wrap items-center gap-2" id="tagFilters">
+            <button onclick="filterByTag('all')" class="tag-btn active px-3 py-1.5 rounded-full text-xs font-semibold bg-emerald-600 text-white transition" data-tag="all" data-i18n="tag_all">All Properties</button>
+            <button onclick="filterByTag('#TikTokViral')" class="tag-btn px-3 py-1.5 rounded-full text-xs font-semibold bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 transition" data-tag="#TikTokViral"><i class="fa-brands fa-tiktok text-pink-500 mr-1"></i>#TikTokViral</button>
+            <button onclick="filterByTag('#DirectOwner')" class="tag-btn px-3 py-1.5 rounded-full text-xs font-semibold bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 transition" data-tag="#DirectOwner"><i class="fa-solid fa-user-check text-blue-500 mr-1"></i>#DirectOwner</button>
+            <button onclick="filterByTag('#CheapGhaderi')" class="tag-btn px-3 py-1.5 rounded-full text-xs font-semibold bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 transition" data-tag="#CheapGhaderi"><i class="fa-solid fa-tags text-green-500 mr-1"></i>#CheapGhaderi</button>
+        </div>
+        
+        <div class="flex items-center space-x-2 text-xs text-slate-500 font-medium">
+            <span data-i18n="unit_sys">Display Unit:</span>
+            <button onclick="setGlobalUnit('Ropani')" id="unit-ropani" class="px-2.5 py-1 rounded bg-slate-200 dark:bg-slate-800 font-bold text-slate-800 dark:text-slate-200">Hill (Ropani-Aana)</button>
+            <button onclick="setGlobalUnit('Bigha')" id="unit-bigha" class="px-2.5 py-1 rounded hover:bg-slate-200 dark:hover:bg-slate-800">Terai (Bigha-Kattha)</button>
+        </div>
+    </div>
+
+    <div id="propertyGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Rendered by JS -->
+    </div>
+
+    <div class="mt-12 bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-slate-800 shadow-sm">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+            <div>
+                <h3 class="text-xl font-bold flex items-center gap-2" data-i18n="analytics_title">
+                    <i class="fa-solid fa-chart-line text-emerald-500"></i> Nepal Land Price Index Trends (Per Aana / Kattha)
+                </h3>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1" data-i18n="analytics_sub">Avg market valuation trend based on land registry updates & local real estate trades.</p>
+            </div>
+            <div class="text-xs bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 px-3 py-1.5 rounded-xl font-semibold">
+                <i class="fa-solid fa-arrow-trend-up mr-1"></i> +12.4% Annual Avg Growth
+            </div>
+        </div>
+        <div class="h-64 sm:h-72 w-full">
+            <canvas id="marketChart"></canvas>
+        </div>
+    </div>
+</main>
+
+<div id="aiChatWidget" class="fixed bottom-6 right-6 z-50">
+    <!-- Chat Button -->
+    <button onclick="toggleAiChat()" class="w-14 h-14 rounded-full bg-gradient-to-r from-emerald-600 to-teal-600 text-white flex items-center justify-center shadow-xl hover:scale-105 active:scale-95 transition-all group relative">
+        <i class="fa-solid fa-robot text-2xl group-hover:rotate-12 transition-transform"></i>
+        <span class="absolute -top-1 -right-1 w-3.5 h-3.5 bg-emerald-400 rounded-full border-2 border-white dark:border-slate-900 animate-pulse"></span>
+    </button>
+
+    <!-- Chat Drawer/Popup -->
+    <div id="aiChatWindow" class="hidden absolute bottom-16 right-0 w-[90vw] sm:w-[380px] h-[520px] bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl shadow-2xl flex flex-col overflow-hidden">
+        <!-- AI Header -->
+        <div class="bg-gradient-to-r from-emerald-700 to-teal-800 text-white p-4 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center">
+                    <i class="fa-solid fa-brain text-emerald-300"></i>
+                </div>
+                <div>
+                    <h4 class="font-bold text-sm" data-i18n="ai_title">GharGhaderi AI Assistant</h4>
+                    <p class="text-[10px] text-emerald-200 flex items-center gap-1">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                        Gemini 3 Flash Powered
                     </p>
                 </div>
             </div>
-            <button onclick="toggleAiDrawer()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 text-lg p-1">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
-        </div>
-
-        <!-- Chat Area -->
-        <div id="aiChatMessages" class="flex-1 p-4 overflow-y-auto space-y-3 text-xs">
-            <div class="bg-brand-50 dark:bg-slate-800 p-3 rounded-xl border border-brand-100 dark:border-slate-700 text-slate-700 dark:text-slate-200">
-                <p class="font-semibold text-brand-700 dark:text-brand-300 mb-1">Namaste! 🙏 I am your GharGhaderi Real Estate Assistant.</p>
-                <p>I can help you with:</p>
-                <ul class="list-disc list-inside mt-1 space-y-0.5 text-slate-600 dark:text-slate-400">
-                    <li>Evaluating land prices per Aana / Katha</li>
-                    <li>Malpot tax & Capital Gains Tax (CGT) rules</li>
-                    <li>Understanding Lalpurja / Kitta No. checks</li>
-                    <li>Drafting attractive property descriptions</li>
-                </ul>
-            </div>
-        </div>
-
-        <!-- Prompt Suggestions -->
-        <div class="p-2 border-t border-slate-100 dark:border-slate-800/60 overflow-x-auto flex gap-1.5 scrollbar-none">
-            <button onclick="sendQuickPrompt('Explain 1 Ropani to Aana and Square Feet')" class="px-2.5 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-brand-50 text-[11px] font-medium rounded-full whitespace-nowrap text-slate-600 dark:text-slate-300">
-                📏 Ropani Units
-            </button>
-            <button onclick="sendQuickPrompt('How is Capital Gains Tax calculated on land in Nepal?')" class="px-2.5 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-brand-50 text-[11px] font-medium rounded-full whitespace-nowrap text-slate-600 dark:text-slate-300">
-                💰 CGT Tax Rules
-            </button>
-            <button onclick="sendQuickPrompt('What documents are needed for Lalpurja land transfer at Malpot?')" class="px-2.5 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-brand-50 text-[11px] font-medium rounded-full whitespace-nowrap text-slate-600 dark:text-slate-300">
-                📜 Malpot Process
-            </button>
-        </div>
-
-        <!-- AI Chat Input Bar -->
-        <div class="p-3 border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
-            <form onsubmit="handleAiSubmit(event)" class="flex gap-2">
-                <input type="text" id="aiInput" placeholder="Ask anything about land or property in Nepal..." class="flex-1 bg-slate-100 dark:bg-slate-800 text-xs px-3 py-2 rounded-xl focus:outline-none dark:text-white border border-transparent focus:border-brand-500">
-                <button type="submit" id="aiSendBtn" class="bg-brand-600 hover:bg-brand-700 text-white px-3 py-2 rounded-xl text-xs font-semibold transition-all flex items-center justify-center">
-                    <i class="fa-solid fa-paper-plane"></i>
-                </button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Authentication Modal -->
-    <div id="authModal" class="fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-sm flex items-center justify-center p-4 hidden">
-        <div class="bg-white dark:bg-slate-900 rounded-2xl max-w-sm w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-800 relative">
-            <button onclick="closeAuthModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:hover:text-white">
+            <button onclick="toggleAiChat()" class="text-white/80 hover:text-white p-1">
                 <i class="fa-solid fa-xmark text-lg"></i>
             </button>
-            <div class="text-center mb-6">
-                <div class="w-12 h-12 rounded-xl bg-rose-100 dark:bg-rose-950/60 text-nepal-crimson flex items-center justify-center mx-auto mb-2 text-xl">
-                    <i class="fa-solid fa-user-lock"></i>
-                </div>
-                <h3 class="text-lg font-bold text-slate-900 dark:text-white">Sign In to GharGhaderi</h3>
-                <p class="text-xs text-slate-500 dark:text-slate-400">Access direct seller chat, post listings & save favorites</p>
+        </div>
+
+        <!-- Chat Messages -->
+        <div id="aiMessages" class="flex-1 p-4 overflow-y-auto space-y-3 scrollbar-thin text-xs sm:text-sm">
+            <div class="bg-slate-100 dark:bg-slate-800 p-3 rounded-2xl rounded-tl-none max-w-[85%] text-slate-800 dark:text-slate-200">
+                <p data-i18n="ai_welcome">Namaste! 🙏 I am your Nepali Real Estate AI Expert. Ask me anything about land valuation, Lalpurja, Kitta, Malpot tax, or Ropani conversions!</p>
+            </div>
+        </div>
+
+        <!-- Quick Prompts -->
+        <div class="p-2 border-t border-slate-100 dark:border-slate-800 flex gap-1 overflow-x-auto scrollbar-thin text-[11px]">
+            <button onclick="sendQuickPrompt('How is Malpot CGT tax calculated in Nepal?')" class="whitespace-nowrap bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 px-2.5 py-1 rounded-lg border border-emerald-200 dark:border-emerald-800">
+                📊 Tax Rules
+            </button>
+            <button onclick="sendQuickPrompt('Convert 4 Aana 2 Paisa to Sq. Feet')" class="whitespace-nowrap bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 px-2.5 py-1 rounded-lg border border-emerald-200 dark:border-emerald-800">
+                📐 4 Aana Conversion
+            </button>
+            <button onclick="sendQuickPrompt('What documents are required for Lalpurja land transfer?')" class="whitespace-nowrap bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 px-2.5 py-1 rounded-lg border border-emerald-200 dark:border-emerald-800">
+                📜 Legal Check
+            </button>
+        </div>
+
+        <!-- Chat Input -->
+        <div class="p-3 bg-slate-50 dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 flex gap-2">
+            <input type="text" id="aiInput" onkeypress="handleAiKeyPress(event)" placeholder="Ask AI in English or Nepali..." class="flex-1 bg-white dark:bg-slate-800 text-xs sm:text-sm px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 focus:outline-none focus:border-emerald-500">
+            <button onclick="sendAiMessage()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3.5 py-2 rounded-xl transition">
+                <i class="fa-solid fa-paper-plane text-xs"></i>
+            </button>
+        </div>
+    </div>
+</div>
+
+
+<!-- UNIT CONVERTER MODAL -->
+<div id="converterModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-slate-900 rounded-3xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-800 relative">
+        <button onclick="closeModal('converterModal')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+            <i class="fa-solid fa-xmark text-xl"></i>
+        </button>
+        <h3 class="text-xl font-extrabold flex items-center gap-2 mb-4" data-i18n="conv_title">
+            <i class="fa-solid fa-arrows-rotate text-emerald-500"></i> Nepali Land Unit Converter
+        </h3>
+        
+        <div class="space-y-4 text-sm">
+            <!-- System Chooser -->
+            <div class="grid grid-cols-2 gap-2 bg-slate-100 dark:bg-slate-800 p-1 rounded-xl font-medium text-xs text-center">
+                <button id="conv-mode-hill" onclick="setConvMode('hill')" class="py-2 rounded-lg bg-white dark:bg-slate-700 shadow text-emerald-600 dark:text-emerald-400 font-bold">Hill (Ropani-Aana)</button>
+                <button id="conv-mode-terai" onclick="setConvMode('terai')" class="py-2 rounded-lg text-slate-600 dark:text-slate-300">Terai (Bigha-Kattha)</button>
             </div>
 
-            <form onsubmit="handleAuthSubmit(event)" class="space-y-3">
+            <!-- Inputs -->
+            <div id="hillInputs" class="grid grid-cols-2 sm:grid-cols-4 gap-2">
                 <div>
-                    <label class="text-[11px] font-semibold text-slate-600 dark:text-slate-400 uppercase">Email Address</label>
-                    <input type="email" id="authEmail" required placeholder="user@nepal.com" class="w-full bg-slate-100 dark:bg-slate-800 text-xs px-3 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:outline-none focus:border-brand-500">
+                    <label class="text-xs font-semibold text-slate-500" data-i18n="u_ropani">Ropani</label>
+                    <input type="number" id="inp-ropani" value="0" min="0" oninput="convertLand('hill')" class="w-full mt-1 p-2 bg-slate-50 dark:bg-slate-800 border rounded-xl border-slate-200 dark:border-slate-700 font-semibold">
                 </div>
                 <div>
-                    <label class="text-[11px] font-semibold text-slate-600 dark:text-slate-400 uppercase">Password</label>
-                    <input type="password" id="authPassword" required placeholder="••••••••" class="w-full bg-slate-100 dark:bg-slate-800 text-xs px-3 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:outline-none focus:border-brand-500">
+                    <label class="text-xs font-semibold text-slate-500" data-i18n="u_aana">Aana</label>
+                    <input type="number" id="inp-aana" value="4" min="0" max="16" oninput="convertLand('hill')" class="w-full mt-1 p-2 bg-slate-50 dark:bg-slate-800 border rounded-xl border-slate-200 dark:border-slate-700 font-semibold">
                 </div>
                 <div>
-                    <label class="text-[11px] font-semibold text-slate-600 dark:text-slate-400 uppercase">User Role</label>
-                    <select id="authRole" class="w-full bg-slate-100 dark:bg-slate-800 text-xs px-3 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:outline-none">
-                        <option value="Buyer">Buyer / Investor</option>
-                        <option value="Landowner">Direct Landowner</option>
-                        <option value="Agent">Verified Real Estate Agent</option>
+                    <label class="text-xs font-semibold text-slate-500" data-i18n="u_paisa">Paisa</label>
+                    <input type="number" id="inp-paisa" value="0" min="0" max="4" oninput="convertLand('hill')" class="w-full mt-1 p-2 bg-slate-50 dark:bg-slate-800 border rounded-xl border-slate-200 dark:border-slate-700 font-semibold">
+                </div>
+                <div>
+                    <label class="text-xs font-semibold text-slate-500" data-i18n="u_dam">Dam</label>
+                    <input type="number" id="inp-dam" value="0" min="0" max="4" oninput="convertLand('hill')" class="w-full mt-1 p-2 bg-slate-50 dark:bg-slate-800 border rounded-xl border-slate-200 dark:border-slate-700 font-semibold">
+                </div>
+            </div>
+
+            <div id="teraiInputs" class="grid grid-cols-3 gap-2 hidden">
+                <div>
+                    <label class="text-xs font-semibold text-slate-500" data-i18n="u_bigha">Bigha</label>
+                    <input type="number" id="inp-bigha" value="0" min="0" oninput="convertLand('terai')" class="w-full mt-1 p-2 bg-slate-50 dark:bg-slate-800 border rounded-xl border-slate-200 dark:border-slate-700 font-semibold">
+                </div>
+                <div>
+                    <label class="text-xs font-semibold text-slate-500" data-i18n="u_kattha">Kattha</label>
+                    <input type="number" id="inp-kattha" value="0" min="0" max="20" oninput="convertLand('terai')" class="w-full mt-1 p-2 bg-slate-50 dark:bg-slate-800 border rounded-xl border-slate-200 dark:border-slate-700 font-semibold">
+                </div>
+                <div>
+                    <label class="text-xs font-semibold text-slate-500" data-i18n="u_dhur">Dhur</label>
+                    <input type="number" id="inp-dhur" value="0" min="0" max="20" oninput="convertLand('terai')" class="w-full mt-1 p-2 bg-slate-50 dark:bg-slate-800 border rounded-xl border-slate-200 dark:border-slate-700 font-semibold">
+                </div>
+            </div>
+
+            <!-- Output standard units -->
+            <div class="bg-emerald-50 dark:bg-emerald-950/40 p-4 rounded-2xl border border-emerald-200 dark:border-emerald-800/80 space-y-2">
+                <div class="flex justify-between items-center">
+                    <span class="text-slate-600 dark:text-slate-400 text-xs font-medium" data-i18n="conv_sqft">Square Feet (Sq. Ft):</span>
+                    <span id="res-sqft" class="text-base font-bold text-emerald-700 dark:text-emerald-300">1,369.00 Sq.Ft</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="text-slate-600 dark:text-slate-400 text-xs font-medium" data-i18n="conv_sqm">Square Meters (Sq. M):</span>
+                    <span id="res-sqm" class="text-base font-bold text-emerald-700 dark:text-emerald-300">127.18 Sq.M</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- TAX CALCULATOR MODAL -->
+<div id="taxModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-slate-900 rounded-3xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-800 relative">
+        <button onclick="closeModal('taxModal')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+            <i class="fa-solid fa-xmark text-xl"></i>
+        </button>
+        <h3 class="text-xl font-extrabold flex items-center gap-2 mb-2" data-i18n="tax_title">
+            <i class="fa-solid fa-scale-balanced text-amber-500"></i> Malpot & Capital Gains Tax Estimator
+        </h3>
+        <p class="text-xs text-slate-500 mb-4" data-i18n="tax_sub">Based on Nepal Government official registration and CGT tax tiers.</p>
+
+        <div class="space-y-3 text-sm">
+            <div>
+                <label class="text-xs font-semibold text-slate-600 dark:text-slate-400" data-i18n="tax_price_label">Total Agreed Land Price (NPR):</label>
+                <input type="number" id="taxPriceInput" value="15000000" step="100000" oninput="calculateMalpotTax()" class="w-full mt-1 p-2.5 bg-slate-50 dark:bg-slate-800 border rounded-xl border-slate-200 dark:border-slate-700 font-bold text-base text-emerald-600">
+            </div>
+
+            <div>
+                <label class="text-xs font-semibold text-slate-600 dark:text-slate-400" data-i18n="tax_ownership_label">Ownership Duration (For CGT Rate):</label>
+                <select id="taxOwnershipSelect" onchange="calculateMalpotTax()" class="w-full mt-1 p-2.5 bg-slate-50 dark:bg-slate-800 border rounded-xl border-slate-200 dark:border-slate-700 text-xs font-medium">
+                    <option value="more5">More than 5 Years (5% CGT)</option>
+                    <option value="less5">Less than 5 Years (7.5% CGT)</option>
+                </select>
+            </div>
+
+            <div class="bg-slate-50 dark:bg-slate-800 p-4 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-2 text-xs">
+                <div class="flex justify-between">
+                    <span class="text-slate-500" data-i18n="tax_reg_fee">Registration Fee (5.0%):</span>
+                    <span id="taxRegFee" class="font-bold">NPR 750,000</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-slate-500" data-i18n="tax_cgt">Capital Gains Tax (CGT):</span>
+                    <span id="taxCgt" class="font-bold">NPR 750,000</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-slate-500" data-i18n="tax_service">Malpot Local Service Charge (~0.5%):</span>
+                    <span id="taxService" class="font-bold">NPR 75,000</span>
+                </div>
+                <div class="border-t border-slate-200 dark:border-slate-700 pt-2 flex justify-between text-sm font-extrabold text-emerald-600 dark:text-emerald-400">
+                    <span data-i18n="tax_total">Total Approx Gov Tax:</span>
+                    <span id="taxTotal">NPR 1,575,000</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- KITTA CHECK MODAL -->
+<div id="kittaModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-slate-900 rounded-3xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-800 relative">
+        <button onclick="closeModal('kittaModal')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+            <i class="fa-solid fa-xmark text-xl"></i>
+        </button>
+        <h3 class="text-xl font-extrabold flex items-center gap-2 mb-2" data-i18n="kitta_title">
+            <i class="fa-solid fa-map-location-dot text-blue-500"></i> Cadastral Kitta Verification
+        </h3>
+        <p class="text-xs text-slate-500 mb-4" data-i18n="kitta_sub">Simulated verification with Survey Department (Napi Dept) database.</p>
+
+        <div class="space-y-3">
+            <div class="grid grid-cols-2 gap-2">
+                <div>
+                    <label class="text-xs font-semibold text-slate-500" data-i18n="kitta_district">District</label>
+                    <select id="kittaDistrict" class="w-full mt-1 p-2 bg-slate-50 dark:bg-slate-800 border rounded-xl border-slate-200 dark:border-slate-700 text-xs">
+                        <option>Lalitpur</option>
+                        <option>Kathmandu</option>
+                        <option>Bhaktapur</option>
+                        <option>Kaski (Pokhara)</option>
+                        <option>Chitwan</option>
                     </select>
                 </div>
-                <button type="submit" class="w-full py-2.5 bg-brand-600 hover:bg-brand-700 text-white rounded-xl text-xs font-bold transition-all mt-2">
-                    Continue & Authenticate
-                </button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Post Property Listing Modal -->
-    <div id="postModal" class="fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-sm flex items-center justify-center p-4 hidden">
-        <div class="bg-white dark:bg-slate-900 rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-800 relative max-h-[90vh] overflow-y-auto">
-            <button onclick="closePostModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:hover:text-white">
-                <i class="fa-solid fa-xmark text-lg"></i>
-            </button>
-            <div class="mb-4">
-                <h3 class="text-lg font-bold text-slate-900 dark:text-white">Post Free Property Listing</h3>
-                <p class="text-xs text-slate-500 dark:text-slate-400">Directly connect with 10,000+ verified buyers across Nepal</p>
-            </div>
-
-            <form onsubmit="handlePostProperty(event)" class="space-y-3">
                 <div>
-                    <label class="text-[11px] font-semibold text-slate-600 dark:text-slate-400 uppercase">Property Title</label>
-                    <input type="text" id="postTitle" required placeholder="e.g., 4 Aana Prime Ghaderi Plot in Imadol" class="w-full bg-slate-100 dark:bg-slate-800 text-xs px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:outline-none">
-                </div>
-                <div class="grid grid-cols-2 gap-2">
-                    <div>
-                        <label class="text-[11px] font-semibold text-slate-600 dark:text-slate-400 uppercase">Category</label>
-                        <select id="postCategory" class="w-full bg-slate-100 dark:bg-slate-800 text-xs px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:outline-none">
-                            <option value="ghaderi">Ghaderi Plot</option>
-                            <option value="house">House / Villa</option>
-                            <option value="commercial">Commercial Land</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="text-[11px] font-semibold text-slate-600 dark:text-slate-400 uppercase">Price (Lakhs NPR)</label>
-                        <input type="number" id="postPrice" required placeholder="e.g. 140 (1.4 Crore)" class="w-full bg-slate-100 dark:bg-slate-800 text-xs px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:outline-none">
-                    </div>
-                </div>
-                <div class="grid grid-cols-2 gap-2">
-                    <div>
-                        <label class="text-[11px] font-semibold text-slate-600 dark:text-slate-400 uppercase">Location / District</label>
-                        <input type="text" id="postLocation" required placeholder="e.g., Lalitpur Ward 4" class="w-full bg-slate-100 dark:bg-slate-800 text-xs px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:outline-none">
-                    </div>
-                    <div>
-                        <label class="text-[11px] font-semibold text-slate-600 dark:text-slate-400 uppercase">Kitta No. (कि.नं.)</label>
-                        <input type="text" id="postKitta" required placeholder="e.g. 452" class="w-full bg-slate-100 dark:bg-slate-800 text-xs px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:outline-none">
-                    </div>
-                </div>
-                <div class="grid grid-cols-2 gap-2">
-                    <div>
-                        <label class="text-[11px] font-semibold text-slate-600 dark:text-slate-400 uppercase">Area Size</label>
-                        <input type="text" id="postArea" required placeholder="e.g. 0-4-1-0 (R-A-P-D)" class="w-full bg-slate-100 dark:bg-slate-800 text-xs px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:outline-none">
-                    </div>
-                    <div>
-                        <label class="text-[11px] font-semibold text-slate-600 dark:text-slate-400 uppercase">Road Access</label>
-                        <input type="text" id="postRoad" required placeholder="e.g. 20 ft Pitched Road" class="w-full bg-slate-100 dark:bg-slate-800 text-xs px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:outline-none">
-                    </div>
-                </div>
-                <div>
-                    <label class="text-[11px] font-semibold text-slate-600 dark:text-slate-400 uppercase">Image URL (Optional)</label>
-                    <input type="url" id="postImage" placeholder="https://images.unsplash.com/..." class="w-full bg-slate-100 dark:bg-slate-800 text-xs px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:outline-none">
-                </div>
-                <div>
-                    <label class="text-[11px] font-semibold text-slate-600 dark:text-slate-400 uppercase">Description</label>
-                    <textarea id="postDesc" rows="2" placeholder="Detail proximity to schools, water supply, electricity..." class="w-full bg-slate-100 dark:bg-slate-800 text-xs px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:outline-none"></textarea>
-                </div>
-                <button type="submit" class="w-full py-2.5 bg-nepal-crimson hover:bg-rose-700 text-white rounded-xl text-xs font-bold transition-all shadow-md">
-                    Publish Property Listing
-                </button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Malpot CGT & Registration Tax Calculator Modal -->
-    <div id="calcModal" class="fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-sm flex items-center justify-center p-4 hidden">
-        <div class="bg-white dark:bg-slate-900 rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-800 relative">
-            <button onclick="closeCalcModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:hover:text-white">
-                <i class="fa-solid fa-xmark text-lg"></i>
-            </button>
-            <div class="flex items-center gap-2 mb-4">
-                <i class="fa-solid fa-calculator text-rose-500 text-xl"></i>
-                <div>
-                    <h3 class="text-base font-bold text-slate-900 dark:text-white">Malpot Tax & CGT Calculator</h3>
-                    <p class="text-[11px] text-slate-500">Government of Nepal Registration Fees & Tax Standards</p>
+                    <label class="text-xs font-semibold text-slate-500" data-i18n="kitta_no">Kitta Number (कित्ता नं.)</label>
+                    <input type="text" id="kittaNumber" placeholder="e.g. 402" class="w-full mt-1 p-2 bg-slate-50 dark:bg-slate-800 border rounded-xl border-slate-200 dark:border-slate-700 text-xs font-semibold">
                 </div>
             </div>
 
-            <div class="space-y-3 text-xs">
-                <div>
-                    <label class="font-semibold text-slate-600 dark:text-slate-400">Total Transaction Value (NPR Lakhs):</label>
-                    <input type="number" id="calcVal" value="100" oninput="calculateMalpotTax()" class="w-full mt-1 bg-slate-100 dark:bg-slate-800 px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:outline-none">
-                </div>
-                <div class="grid grid-cols-2 gap-2">
-                    <div>
-                        <label class="font-semibold text-slate-600 dark:text-slate-400">Holding Period:</label>
-                        <select id="calcPeriod" onchange="calculateMalpotTax()" class="w-full mt-1 bg-slate-100 dark:bg-slate-800 px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:outline-none">
-                            <option value="less5">Less than 5 Years (7.5% CGT)</option>
-                            <option value="more5">More than 5 Years (5% CGT)</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="font-semibold text-slate-600 dark:text-slate-400">Area Zone:</label>
-                        <select id="calcZone" onchange="calculateMalpotTax()" class="w-full mt-1 bg-slate-100 dark:bg-slate-800 px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:outline-none">
-                            <option value="urban">Metropolitan / Urban (4.5%)</option>
-                            <option value="rural">Rural Municipality (2.5%)</option>
-                        </select>
-                    </div>
-                </div>
+            <button onclick="runKittaCheck()" class="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold text-xs transition">
+                <i class="fa-solid fa-shield-halved mr-1"></i> <span data-i18n="kitta_btn">Verify Cadastral Map</span>
+            </button>
 
-                <div class="bg-slate-50 dark:bg-slate-800/80 p-3 rounded-xl border border-slate-200 dark:border-slate-700 space-y-2 mt-3">
-                    <div class="flex justify-between">
-                        <span class="text-slate-500">Registration Fee (Malpot):</span>
-                        <span id="taxReg" class="font-bold text-slate-900 dark:text-white">NPR 4,50,000</span>
-                    </div>
-                    <div class="flex justify-between">
-                        <span class="text-slate-500">Capital Gains Tax (CGT):</span>
-                        <span id="taxCgt" class="font-bold text-slate-900 dark:text-white">NPR 7,50,000</span>
-                    </div>
-                    <div class="border-t border-slate-200 dark:border-slate-700 pt-2 flex justify-between font-bold text-slate-900 dark:text-white">
-                        <span>Total Government Tax:</span>
-                        <span id="taxTotal" class="text-rose-600 dark:text-rose-400">NPR 12,00,000</span>
-                    </div>
+            <div id="kittaResult" class="hidden p-4 rounded-2xl bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-800 text-xs space-y-1.5">
+                <div class="flex items-center space-x-2 text-emerald-600 dark:text-emerald-400 font-bold">
+                    <i class="fa-solid fa-circle-check"></i>
+                    <span data-i18n="kitta_status">VERIFIED KITTA MAP FOUND</span>
                 </div>
+                <p><strong>District:</strong> <span id="resDistrict">Lalitpur</span> | <strong>Kitta No:</strong> <span id="resKitta">402</span></p>
+                <p><strong>Approved Road Access:</strong> 16 Ft Pitch Road</p>
+                <p><strong>Land Category:</strong> Awasya (Residential Plot)</p>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- Land Unit Converter Modal -->
-    <div id="converterModal" class="fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-sm flex items-center justify-center p-4 hidden">
-        <div class="bg-white dark:bg-slate-900 rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-800 relative">
-            <button onclick="closeConverterModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:hover:text-white">
-                <i class="fa-solid fa-xmark text-lg"></i>
-            </button>
-            <div class="flex items-center gap-2 mb-4">
-                <i class="fa-solid fa-scale-balanced text-emerald-500 text-xl"></i>
-                <div>
-                    <h3 class="text-base font-bold text-slate-900 dark:text-white">Land Measurement Converter</h3>
-                    <p class="text-[11px] text-slate-500">Convert between Ropani (Hills) & Bigha (Terai)</p>
-                </div>
-            </div>
+<!-- DIRECT OWNER MODAL / DRAWER -->
+<div id="ownerModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-slate-900 rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-800 relative">
+        <button onclick="closeModal('ownerModal')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600">
+            <i class="fa-solid fa-xmark text-xl"></i>
+        </button>
+        <h3 class="text-xl font-extrabold flex items-center gap-2 mb-1" data-i18n="owner_title">
+            <i class="fa-solid fa-address-card text-emerald-500"></i> Direct Owner Contact
+        </h3>
+        <p class="text-xs text-slate-500 mb-4" data-i18n="owner_sub">No broker fees. Deal directly with the verified landowner.</p>
 
-            <div class="space-y-3 text-xs">
-                <div>
-                    <label class="font-semibold text-slate-600 dark:text-slate-400">Enter Value in Square Feet (Sq. Ft.):</label>
-                    <input type="number" id="convSqFt" value="3422.5" oninput="convertUnitsFromSqFt()" class="w-full mt-1 bg-slate-100 dark:bg-slate-800 px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:outline-none">
-                </div>
-
-                <div class="grid grid-cols-2 gap-3 mt-3">
-                    <div class="bg-emerald-50 dark:bg-emerald-950/40 p-3 rounded-xl border border-emerald-200 dark:border-emerald-800">
-                        <span class="text-[10px] uppercase tracking-wider font-bold text-emerald-700 dark:text-emerald-300 block mb-1">Hills System (R-A-P-D)</span>
-                        <p id="hillResult" class="font-bold text-slate-900 dark:text-white">1 Ropani (16 Aana)</p>
-                    </div>
-                    <div class="bg-blue-50 dark:bg-blue-950/40 p-3 rounded-xl border border-blue-200 dark:border-blue-800">
-                        <span class="text-[10px] uppercase tracking-wider font-bold text-blue-700 dark:text-blue-300 block mb-1">Terai System (B-K-D)</span>
-                        <p id="teraiResult" class="font-bold text-slate-900 dark:text-white">0.05 Bigha (1 Katha)</p>
-                    </div>
-                </div>
-            </div>
+        <div id="ownerDetails" class="space-y-4">
+            <!-- Dynamic owner info injected here -->
         </div>
     </div>
+</div>
 
-    <!-- Developer API & Sandbox Modal -->
-    <div id="devApiModal" class="fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-sm flex items-center justify-center p-4 hidden">
-        <div class="bg-white dark:bg-slate-900 rounded-2xl max-w-2xl w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-800 relative max-h-[85vh] overflow-y-auto">
-            <button onclick="closeDevApiModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:hover:text-white">
-                <i class="fa-solid fa-xmark text-lg"></i>
+<!-- AUTH MODAL -->
+<div id="authModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-slate-900 rounded-3xl max-w-sm w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-800 relative">
+        <button onclick="closeModal('authModal')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600">
+            <i class="fa-solid fa-xmark text-xl"></i>
+        </button>
+        <h3 class="text-xl font-extrabold mb-4 text-center" data-i18n="auth_title">Welcome to GharGhaderi</h3>
+        <form onsubmit="handleAuthSubmit(event)" class="space-y-3 text-xs">
+            <div>
+                <label class="font-semibold text-slate-600 dark:text-slate-400">Email / Phone</label>
+                <input type="text" required placeholder="98XXXXXXXX / email@domain.com" class="w-full mt-1 p-2.5 bg-slate-50 dark:bg-slate-800 border rounded-xl border-slate-200 dark:border-slate-700">
+            </div>
+            <div>
+                <label class="font-semibold text-slate-600 dark:text-slate-400">Password</label>
+                <input type="password" required placeholder="••••••••" class="w-full mt-1 p-2.5 bg-slate-50 dark:bg-slate-800 border rounded-xl border-slate-200 dark:border-slate-700">
+            </div>
+            <button type="submit" class="w-full py-3 bg-gradient-to-r from-emerald-600 to-teal-600 text-white rounded-xl font-bold transition shadow-lg shadow-emerald-600/20">
+                <span data-i18n="auth_submit">Sign In / Register</span>
             </button>
-            <div class="flex items-center gap-2 mb-4">
-                <i class="fa-solid fa-code text-violet-500 text-xl"></i>
-                <div>
-                    <h3 class="text-base font-bold text-slate-900 dark:text-white">Developer REST & WebSocket API Suite</h3>
-                    <p class="text-[11px] text-slate-500">Backend integrations for Python, Node.js, Go, and Rust</p>
-                </div>
-            </div>
+        </form>
+    </div>
+</div>
 
-            <!-- Language Tabs -->
-            <div class="flex gap-2 border-b border-slate-200 dark:border-slate-800 mb-3">
-                <button onclick="setApiTab('py')" id="tab-py" class="px-3 py-1.5 text-xs font-semibold border-b-2 border-violet-500 text-violet-600">Python (FastAPI)</button>
-                <button onclick="setApiTab('node')" id="tab-node" class="px-3 py-1.5 text-xs font-semibold border-b-2 border-transparent text-slate-500">Node.js (Express)</button>
-                <button onclick="setApiTab('go')" id="tab-go" class="px-3 py-1.5 text-xs font-semibold border-b-2 border-transparent text-slate-500">Go (Gin)</button>
-                <button onclick="setApiTab('rust')" id="tab-rust" class="px-3 py-1.5 text-xs font-semibold border-b-2 border-transparent text-slate-500">Rust (Actix)</button>
-            </div>
+<script>
+// --- GLOBAL APPLICATION STATE ---
+let currentLang = 'en'; // 'en' or 'ne'
+let globalUnitSystem = 'Ropani'; // 'Ropani' or 'Bigha'
+let selectedTag = 'all';
+let currentUser = null;
 
-            <pre id="apiCodeBlock" class="bg-slate-950 text-slate-200 p-4 rounded-xl text-[11px] font-mono overflow-x-auto leading-relaxed border border-slate-800">
-# FastAPI Endpoint for Kitta Land Query
-from fastapi import FastAPI, HTTPException
-
-app = FastAPI(title="GharGhaderi Nepal API")
-
-@app.get("/api/v1/properties/kitta/{kitta_no}")
-async def get_kitta_details(kitta_no: str):
-    # Query cadastral database
-    return {
-        "kitta_no": kitta_no,
-        "district": "Lalitpur",
-        "verified": True,
-        "area_sqft": 3422.5,
-        "official_rate_lakhs": 35.0
+// --- DYNAMIC TRANSLATION DICTIONARY ---
+const i18n = {
+    en: {
+        nav_explore: "Explore",
+        nav_converter: "Land Converter",
+        nav_tax: "Tax & Fees",
+        nav_kitta: "Kitta Check",
+        btn_login: "Sign In",
+        btn_logout: "Sign Out",
+        hero_badge: "#1 TikTok & Local Trending Portal Nepal",
+        hero_title: "Find Authentic Ghaderi & Homes Directly From Owners",
+        hero_sub: "Explore real verified land listings across Kathmandu, Pokhara, Chitwan, Lalitpur, Bhaktapur & Itahari. Calculate Malpot tax, convert units instantly, and chat with AI.",
+        filter_all_cities: "All Cities / Hubs",
+        filter_all_types: "All Types",
+        filter_ghaderi: "Ghaderi / Land",
+        filter_house: "House / Villa",
+        filter_commercial: "Commercial Plot",
+        tag_all: "All Properties",
+        unit_sys: "Display Unit:",
+        analytics_title: "Nepal Land Price Index Trends (Per Aana / Kattha)",
+        analytics_sub: "Avg market valuation trend based on land registry updates & local real estate trades.",
+        ai_title: "GharGhaderi AI Assistant",
+        ai_welcome: "Namaste! 🙏 I am your Nepali Real Estate AI Expert. Ask me anything about land valuation, Lalpurja, Kitta, Malpot tax, or Ropani conversions!",
+        conv_title: "Nepali Land Unit Converter",
+        u_ropani: "Ropani",
+        u_aana: "Aana",
+        u_paisa: "Paisa",
+        u_dam: "Dam",
+        u_bigha: "Bigha",
+        u_kattha: "Kattha",
+        u_dhur: "Dhur",
+        conv_sqft: "Square Feet (Sq. Ft):",
+        conv_sqm: "Square Meters (Sq. M):",
+        tax_title: "Malpot & Capital Gains Tax Estimator",
+        tax_sub: "Based on Nepal Government official registration and CGT tax tiers.",
+        tax_price_label: "Total Agreed Land Price (NPR):",
+        tax_ownership_label: "Ownership Duration (For CGT Rate):",
+        tax_reg_fee: "Registration Fee (5.0%):",
+        tax_cgt: "Capital Gains Tax (CGT):",
+        tax_service: "Malpot Local Service Charge (~0.5%):",
+        tax_total: "Total Approx Gov Tax:",
+        kitta_title: "Cadastral Kitta Verification",
+        kitta_sub: "Simulated verification with Survey Department (Napi Dept) database.",
+        kitta_district: "District",
+        kitta_no: "Kitta Number (कित्ता नं.)",
+        kitta_btn: "Verify Cadastral Map",
+        kitta_status: "VERIFIED KITTA MAP FOUND",
+        owner_title: "Direct Owner Contact",
+        owner_sub: "No broker fees. Deal directly with the verified landowner.",
+        auth_title: "Welcome to GharGhaderi",
+        auth_submit: "Sign In / Register"
+    },
+    ne: {
+        nav_explore: "खोजी गर्नुहोस्",
+        nav_converter: "जग्गा नापी रुपान्तरण",
+        nav_tax: "मालपोत र कर",
+        nav_kitta: "कित्ता जाँच",
+        btn_login: "साइन इन",
+        btn_logout: "साइन आउट",
+        hero_badge: "#१ टिकटक र स्थानीय ट्रेन्डिङ जग्गा पोर्टल",
+        hero_title: "घरधनीसँगै सिधै सम्पर्क गरी घडेरी र घर किन्नुहोस्",
+        hero_sub: "काठमाडौँ, पोखरा, चितवन, ललितपुर, भक्तपुर र इटहरीका प्रमाणित जग्गाहरू हेर्नुहोस्। मालपोत कर हिसाब र एआई सहायता प्राप्त गर्नुहोस्।",
+        filter_all_cities: "सबै शहरहरू",
+        filter_all_types: "सबै प्रकार",
+        filter_ghaderi: "घडेरी / जग्गा",
+        filter_house: "घर / भिल्ला",
+        filter_commercial: "व्यापारिक जग्गा",
+        tag_all: "सबै सम्पत्तिहरू",
+        unit_sys: "इकाई प्रणाली:",
+        analytics_title: "नेपाल जग्गा मूल्य वृद्धि दर (प्रति आना / कठ्ठा)",
+        analytics_sub: "मालपोत तथा स्थानीय कारोबारमा आधारित औसत बजार मूल्याङ्कन।",
+        ai_title: "घरघडेरी AI सहायक",
+        ai_welcome: "नमस्ते! 🙏 म नेपाल रियल स्टेट एआई विशेषज्ञ हुँ। जग्गा मूल्याङ्कन, लालपुर्जा, कित्ताकाट वा मालपोत करबारे जे पनि सोध्नुहोस्!",
+        conv_title: "नेपाली जग्गा नापी क्याल्कुलेटर",
+        u_ropani: "रोपनी",
+        u_aana: "आना",
+        u_paisa: "पैसा",
+        u_dam: "दाम",
+        u_bigha: "बिघा",
+        u_kattha: "कठ्ठा",
+        u_dhur: "धुर",
+        conv_sqft: "वर्ग फिट (Sq. Ft):",
+        conv_sqm: "वर्ग मिटर (Sq. M):",
+        tax_title: "मालपोत र पुँजीगत लाभकर हिसाब",
+        tax_sub: "नेपाल सरकारको आधिकारिक रजिष्ट्रेशन र कर दरमा आधारित।",
+        tax_price_label: "कुल जग्गा मूल्य (रू):",
+        tax_ownership_label: "स्वामित्व अवधि (लाभकरको लागि):",
+        tax_reg_fee: "रजिष्ट्रेशन दस्तुर (५.०%):",
+        tax_cgt: "पुँजीगत लाभकर (CGT):",
+        tax_service: "मालपोत सेवा शुल्क (~०.५%):",
+        tax_total: "जम्मा अनुमानित सरकारी कर:",
+        kitta_title: "कित्ता नक्सा प्रमाणीकरण",
+        kitta_sub: "नापी विभागको तथ्याङ्क अनुसार कित्ता जाँच।",
+        kitta_district: "जिल्ला",
+        kitta_no: "कित्ता नम्बर",
+        kitta_btn: "नक्सा प्रमाणीकरण गर्नुहोस्",
+        kitta_status: "प्रमाणित कित्ता नक्सा भेटियो",
+        owner_title: "जग्गाधनीसँग सिधै सम्पर्क",
+        owner_sub: "कुनै बिचौलिया बिना सिधै जग्गाधनीसँग कुराकानी गर्नुहोस्।",
+        auth_title: "घरघडेरी पोर्टलमा स्वागत छ",
+        auth_submit: "साइन इन / दर्ता"
     }
-            </pre>
-        </div>
-    </div>
+};
 
-    <!-- Negotiation / Counter-Offer Drawer -->
-    <div id="negotiateDrawer" class="fixed inset-y-0 right-0 w-full sm:w-96 bg-white dark:bg-slate-900 shadow-2xl z-50 transform translate-x-full transition-transform duration-300 ease-in-out border-l border-slate-200 dark:border-slate-800 flex flex-col">
-        <div class="p-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between bg-slate-50 dark:bg-slate-800/50">
-            <div>
-                <h3 class="text-sm font-bold text-slate-900 dark:text-white" id="negPropTitle">Direct Owner Negotiation</h3>
-                <p class="text-[10px] text-slate-500" id="negPropPrice">Listed Price: NPR 1.4 Crore</p>
+// --- RICH TRENDING PROPERTY DATA (TikTok / Social Real Estate) ---
+const mockProperties = [
+    {
+        id: 1,
+        titleEn: "4 Aana Prime Ghaderi Plot near Bhaisepati Ring Road",
+        titleNe: "भैंसेपाटी रिङरोड नजिकै ४ आना आकर्षक घडेरी",
+        city: "Lalitpur",
+        type: "Land",
+        priceNpr: 38000000, // Total price
+        pricePerAana: "95 Lakhs/Aana",
+        areaHill: "0-4-0-0", // 4 Aana
+        areaTerai: "0-0-11.8", // Equivalent
+        sqft: 1369,
+        roadWidth: "20 Ft South Facing",
+        image: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=800&q=80",
+        hashtags: ["#TikTokViral", "#DirectOwner", "#LalitpurLand"],
+        ownerName: "Ramesh Shrestha",
+        ownerPhone: "+9779851012345",
+        tiktokViews: "142K Views",
+        verified: true,
+        kittaNo: "402"
+    },
+    {
+        id: 2,
+        titleEn: "Luxury 3 Storey Villa with Himalayan View in Sarangkot",
+        titleNe: "सराङकोटमा अन्नपूर्ण हिमश्रृङ्खला देखिने ३ तल्ले लक्जरी भिल्ला",
+        city: "Pokhara",
+        type: "House",
+        priceNpr: 45000000,
+        pricePerAana: "Built-up Villa",
+        areaHill: "0-8-2-0",
+        areaTerai: "0-0-25.2",
+        sqft: 2900,
+        roadWidth: "16 Ft Blacktopped",
+        image: "https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=800&q=80",
+        hashtags: ["#TikTokViral", "#PokharaHomes", "#HimalayanView"],
+        ownerName: "Gurung Real Estate",
+        ownerPhone: "+9779806123456",
+        tiktokViews: "230K Views",
+        verified: true,
+        kittaNo: "1108"
+    },
+    {
+        id: 3,
+        titleEn: "Commercial 1 Kattha Plot near Lion's Chowk Narayangarh",
+        titleNe: "नारायणगढ लायन्स चोक नजिक १ कठ्ठा व्यावसायिक जग्गा",
+        city: "Chitwan",
+        type: "Commercial",
+        priceNpr: 32000000,
+        pricePerAana: "3.2 Crore / Kattha",
+        areaHill: "0-10-2-1",
+        areaTerai: "0-1-0", // 1 Kattha
+        sqft: 3645,
+        roadWidth: "30 Ft Highway Touch",
+        image: "https://images.unsplash.com/photo-1524813686514-a57563d77965?auto=format&fit=crop&w=800&q=80",
+        hashtags: ["#CheapGhaderi", "#ChitwanLand", "#DirectOwner"],
+        ownerName: "Bishnu Prasad Pokharel",
+        ownerPhone: "+9779855098765",
+        tiktokViews: "88K Views",
+        verified: true,
+        kittaNo: "772"
+    },
+    {
+        id: 4,
+        titleEn: "Budget 3 Aana Residential Plot in Jhawkhel, Bhaktapur",
+        titleNe: "भक्तपुर झौखेलमा आकर्षक ३ आना सस्तो आवासीय घडेरी",
+        city: "Bhaktapur",
+        type: "Land",
+        priceNpr: 19500000,
+        pricePerAana: "65 Lakhs/Aana",
+        areaHill: "0-3-0-0",
+        areaTerai: "0-0-8.8",
+        sqft: 1026,
+        roadWidth: "13 Ft Dhalai Road",
+        image: "https://images.unsplash.com/photo-1592595896551-12b371d546d5?auto=format&fit=crop&w=800&q=80",
+        hashtags: ["#CheapGhaderi", "#BhaktapurLand", "#DirectOwner"],
+        ownerName: "Subash Karki",
+        ownerPhone: "+9779841234567",
+        tiktokViews: "65K Views",
+        verified: true,
+        kittaNo: "219"
+    },
+    {
+        id: 5,
+        titleEn: "10 Dhur Ghaderi in Main Highway Area, Itahari",
+        titleNe: "इटहरी राजमार्ग नजिकै १० धुर आकर्षक घडेरी",
+        city: "Itahari",
+        type: "Land",
+        priceNpr: 12000000,
+        pricePerAana: "12 Lakhs / Dhur",
+        areaHill: "0-5-1-0",
+        areaTerai: "0-0-10",
+        sqft: 1822,
+        roadWidth: "20 Ft Gravel Road",
+        image: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=800&q=80",
+        hashtags: ["#CheapGhaderi", "#TikTokViral", "#DirectOwner"],
+        ownerName: "Anil Chaudhary",
+        ownerPhone: "+9779804011223",
+        tiktokViews: "94K Views",
+        verified: false,
+        kittaNo: "854"
+    },
+    {
+        id: 6,
+        titleEn: "Modern 2.5 Storey Bungalow in Golfutar, Kathmandu",
+        titleNe: "काठमाडौँ गोल्फुटारमा बनेको साढे २ तल्ले आधुनिक बंगला",
+        city: "Kathmandu",
+        type: "House",
+        priceNpr: 58000000,
+        pricePerAana: "Modern Interior",
+        areaHill: "0-5-2-0",
+        areaTerai: "0-0-16.3",
+        sqft: 2200,
+        roadWidth: "14 Ft Pitch Road",
+        image: "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=800&q=80",
+        hashtags: ["#TikTokViral", "#KathmanduHomes", "#DirectOwner"],
+        ownerName: "Dr. Prabhat Thapa",
+        ownerPhone: "+9779851088990",
+        tiktokViews: "310K Views",
+        verified: true,
+        kittaNo: "1203"
+    }
+];
+
+// --- RENDER PROPERTIES GRID ---
+function renderProperties() {
+    const grid = document.getElementById('propertyGrid');
+    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+    const city = document.getElementById('cityFilter').value;
+    const type = document.getElementById('typeFilter').value;
+
+    const filtered = mockProperties.filter(p => {
+        const title = currentLang === 'en' ? p.titleEn : p.titleNe;
+        const matchesSearch = title.toLowerCase().includes(searchTerm) || 
+                              p.hashtags.some(h => h.toLowerCase().includes(searchTerm)) ||
+                              p.city.toLowerCase().includes(searchTerm);
+        const matchesCity = city === 'all' || p.city === city;
+        const matchesType = type === 'all' || p.type === type;
+        const matchesTag = selectedTag === 'all' || p.hashtags.includes(selectedTag);
+
+        return matchesSearch && matchesCity && matchesType && matchesTag;
+    });
+
+    if (filtered.length === 0) {
+        grid.innerHTML = `
+            <div class="col-span-full py-12 text-center text-slate-400">
+                <i class="fa-solid fa-folder-open text-4xl mb-2"></i>
+                <p>No listings matched your criteria.</p>
             </div>
-            <button onclick="closeNegotiateDrawer()" class="text-slate-400 hover:text-slate-600 dark:hover:text-white text-lg">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
-        </div>
+        `;
+        return;
+    }
 
-        <div id="offerHistory" class="flex-1 p-4 overflow-y-auto space-y-3 text-xs">
-            <div class="bg-emerald-50 dark:bg-emerald-950/40 p-3 rounded-xl border border-emerald-200 dark:border-emerald-800">
-                <p class="font-bold text-emerald-800 dark:text-emerald-300">0% Broker Fee Guarantee</p>
-                <p class="text-[11px] text-emerald-700 dark:text-emerald-400 mt-0.5">Submit your formal counter-offer directly to the landowner's verified account.</p>
-            </div>
-        </div>
+    grid.innerHTML = filtered.map(p => {
+        const title = currentLang === 'en' ? p.titleEn : p.titleNe;
+        const areaDisplay = globalUnitSystem === 'Ropani' ? `${p.areaHill} (Ropani)` : `${p.areaTerai} (Bigha)`;
+        const priceFormatted = (p.priceNpr / 100000).toFixed(1) + ' Lakhs (NPR)';
 
-        <div class="p-4 border-t border-slate-200 dark:border-slate-800 space-y-2">
-            <div>
-                <label class="text-[10px] font-semibold text-slate-500 uppercase">Your Offer Amount (Lakhs NPR)</label>
-                <input type="number" id="offerAmountInput" placeholder="e.g. 132" class="w-full bg-slate-100 dark:bg-slate-800 px-3 py-2 rounded-xl text-xs dark:text-white border border-slate-200 dark:border-slate-700 focus:outline-none">
-            </div>
-            <button onclick="sendCounterOffer()" class="w-full py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-xs transition-all flex items-center justify-center gap-1.5">
-                <i class="fa-solid fa-handshake"></i> Send Binding Offer
-            </button>
-        </div>
-    </div>
+        return `
+            <div class="bg-white dark:bg-slate-900 rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-xl transition-all duration-300 group flex flex-col">
+                <div class="relative h-48 sm:h-52 overflow-hidden bg-slate-200">
+                    <img src="${p.image}" alt="${title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                    <div class="absolute top-3 left-3 flex flex-wrap gap-1">
+                        <span class="bg-slate-900/80 backdrop-blur-md text-white text-[10px] font-bold px-2.5 py-1 rounded-full border border-white/20">
+                            ${p.city}
+                        </span>
+                        ${p.verified ? `<span class="bg-emerald-600 text-white text-[10px] font-bold px-2 py-1 rounded-full"><i class="fa-solid fa-shield-check mr-1"></i>Verified Kitta</span>` : ''}
+                    </div>
+                    <div class="absolute bottom-3 right-3 bg-pink-600/90 text-white text-[10px] font-extrabold px-2.5 py-1 rounded-full shadow flex items-center gap-1">
+                        <i class="fa-brands fa-tiktok"></i> ${p.tiktokViews}
+                    </div>
+                </div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, onSnapshot, query } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-
-        // Firebase Configuration Setup
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'gharghaderi-nepal-app';
-        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {
-            apiKey: "AIzaSyDummyKeyForFallbackPlaceholder",
-            authDomain: "gharghaderi-nepal.firebaseapp.com",
-            projectId: "gharghaderi-nepal",
-            storageBucket: "gharghaderi-nepal.appspot.com",
-            messagingSenderId: "1234567890",
-            appId: "1:1234567890:web:abcdef123456"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-
-        // Global Application State
-        window.currentUser = null;
-        window.unitSystem = 'hills'; // 'hills' (R-A-P-D) or 'terai' (B-K-D)
-        window.currentLang = 'en';
-        window.activeCategory = 'all';
-        window.activeNegotiationProperty = null;
-
-        // Mock Initial Listings
-        window.properties = [
-            {
-                id: 'prop-1',
-                title: '4 Aana Prime Residential Ghaderi Plot',
-                category: 'ghaderi',
-                district: 'Lalitpur',
-                location: 'Imadol, Ward 4',
-                kittaNo: '452',
-                priceLakhs: 140,
-                areaSqFt: 1369, // 4 Aana
-                areaRAPD: '0-4-0-0',
-                areaBKD: '0-0-8.0',
-                road: '20 ft Pitched Road',
-                verified: true,
-                ownerName: 'Ram Kumar Shrestha',
-                image: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=800&q=80',
-                desc: 'Facing East with mountain views. 1.2 km from Gwarko Ringroad hub.'
-            },
-            {
-                id: 'prop-2',
-                title: 'Modern 2.5 Storey Luxury Bungalow',
-                category: 'house',
-                district: 'Kathmandu',
-                location: 'Budhanilkantha, Ward 3',
-                kittaNo: '881',
-                priceLakhs: 420,
-                areaSqFt: 2738, // 8 Aana
-                areaRAPD: '0-8-0-0',
-                areaBKD: '0-0-16.0',
-                road: '26 ft Concrete Road',
-                verified: true,
-                ownerName: 'Sita Adhikari',
-                image: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80',
-                desc: '5 Bedrooms, modular kitchen, parking for 3 cars and Solar water heating.'
-            },
-            {
-                id: 'prop-3',
-                title: '1 Bigha Commercial Highway Plot',
-                category: 'commercial',
-                district: 'Chitwan',
-                location: 'Bharatpur Bypass Road',
-                kittaNo: '1204',
-                priceLakhs: 850,
-                areaSqFt: 72000, // 1 Bigha
-                areaRAPD: '21-0-0-0',
-                areaBKD: '1-0-0',
-                road: '40 ft Highway Touch',
-                verified: true,
-                ownerName: 'Bishnu Thapa',
-                image: 'https://images.unsplash.com/photo-1628624747186-a941c476b7ef?auto=format&fit=crop&w=800&q=80',
-                desc: 'Ideal for commercial complex, hospital, or automotive showroom.'
-            }
-        ];
-
-        window.initAuth = async function() {
-            try {
-                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                    await signInWithCustomToken(auth, __initial_auth_token);
-                } else {
-                    await signInAnonymously(auth);
-                }
-            } catch (err) {
-                console.debug("Auth fallback handling:", err);
-            }
-
-            onAuthStateChanged(auth, (user) => {
-                if (user) {
-                    window.currentUser = user;
-                    updateAuthUI();
-                } else {
-                    window.currentUser = null;
-                    updateAuthUI();
-                }
-            });
-        };
-
-        function updateAuthUI() {
-            const container = document.getElementById('authContainer');
-            if (window.currentUser) {
-                container.innerHTML = `
-                    <div class="flex items-center gap-2 bg-slate-100 dark:bg-slate-800 pl-2 pr-3 py-1 rounded-full border border-slate-200 dark:border-slate-700 text-xs">
-                        <div class="w-6 h-6 rounded-full bg-brand-600 text-white flex items-center justify-center font-bold text-[10px]">
-                            ${(window.currentUser.email || 'U')[0].toUpperCase()}
+                <div class="p-5 flex-1 flex flex-col justify-between space-y-4">
+                    <div>
+                        <div class="flex items-center space-x-1.5 text-xs font-semibold text-emerald-600 dark:text-emerald-400 mb-1">
+                            <span>${p.pricePerAana}</span>
+                            <span>•</span>
+                            <span>${p.roadWidth}</span>
                         </div>
-                        <span class="font-semibold dark:text-white max-w-[80px] truncate">${window.currentUser.email || 'User'}</span>
-                        <button onclick="handleSignOut()" class="text-slate-400 hover:text-rose-500 ml-1">
-                            <i class="fa-solid fa-right-from-bracket"></i>
+                        <h4 class="font-bold text-slate-800 dark:text-slate-100 text-base leading-snug line-clamp-2">${title}</h4>
+                        <p class="text-xs text-slate-500 mt-2 flex items-center gap-1">
+                            <i class="fa-solid fa-ruler-combined text-slate-400"></i> ${areaDisplay} (${p.sqft} Sq.Ft)
+                        </p>
+                    </div>
+
+                    <div class="flex flex-wrap gap-1 pt-1">
+                        ${p.hashtags.map(h => `<span class="text-[10px] font-semibold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/50 px-2 py-0.5 rounded-md">${h}</span>`).join('')}
+                    </div>
+
+                    <div class="pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
+                        <div>
+                            <span class="text-[10px] uppercase tracking-wider text-slate-400 font-bold block">Total Price</span>
+                            <span class="text-lg font-extrabold text-slate-900 dark:text-white">NPR ${(p.priceNpr).toLocaleString()}</span>
+                        </div>
+                        <button onclick="openOwnerDrawer(${p.id})" class="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white px-3.5 py-2 rounded-xl text-xs font-bold shadow-md shadow-emerald-600/20 transition flex items-center gap-1">
+                            <i class="fa-solid fa-phone"></i> Direct Owner
                         </button>
                     </div>
-                `;
-            } else {
-                container.innerHTML = `
-                    <button onclick="openAuthModal()" class="px-3 py-1.5 rounded-lg border border-brand-500 text-brand-600 dark:text-brand-400 text-xs font-bold hover:bg-brand-50 dark:hover:bg-brand-950 transition-all">
-                        <i class="fa-solid fa-user mr-1"></i> Sign In
-                    </button>
-                `;
-            }
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+// --- LANGUAGE TOGGLE & TRANSLATION ENGINE ---
+function toggleLanguage() {
+    currentLang = currentLang === 'en' ? 'ne' : 'en';
+    document.getElementById('lang-label').innerText = currentLang === 'en' ? 'English' : 'नेपाली';
+    applyTranslations();
+    renderProperties();
+}
+
+function applyTranslations() {
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (i18n[currentLang] && i18n[currentLang][key]) {
+            el.innerText = i18n[currentLang][key];
         }
+    });
+}
 
-        window.handleSignOut = async function() {
-            await signOut(auth);
-            updateAuthUI();
+// --- GLOBAL UNIT TOGGLE ---
+function setGlobalUnit(unit) {
+    globalUnitSystem = unit;
+    document.getElementById('unit-ropani').className = unit === 'Ropani' ? 'px-2.5 py-1 rounded bg-slate-200 dark:bg-slate-800 font-bold text-slate-800 dark:text-slate-200' : 'px-2.5 py-1 rounded hover:bg-slate-200 dark:hover:bg-slate-800';
+    document.getElementById('unit-bigha').className = unit === 'Bigha' ? 'px-2.5 py-1 rounded bg-slate-200 dark:bg-slate-800 font-bold text-slate-800 dark:text-slate-200' : 'px-2.5 py-1 rounded hover:bg-slate-200 dark:hover:bg-slate-800';
+    renderProperties();
+}
+
+// --- TAG FILTERING ---
+function filterByTag(tag) {
+    selectedTag = tag;
+    document.querySelectorAll('.tag-btn').forEach(b => {
+        if (b.getAttribute('data-tag') === tag) {
+            b.className = 'tag-btn active px-3 py-1.5 rounded-full text-xs font-semibold bg-emerald-600 text-white transition';
+        } else {
+            b.className = 'tag-btn px-3 py-1.5 rounded-full text-xs font-semibold bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 transition';
+        }
+    });
+    renderProperties();
+}
+
+function applyFilters() {
+    renderProperties();
+}
+
+// --- LAND UNIT CONVERTER MATH ENGINE ---
+function setConvMode(mode) {
+    if (mode === 'hill') {
+        document.getElementById('hillInputs').classList.remove('hidden');
+        document.getElementById('teraiInputs').classList.add('hidden');
+        document.getElementById('conv-mode-hill').className = 'py-2 rounded-lg bg-white dark:bg-slate-700 shadow text-emerald-600 dark:text-emerald-400 font-bold';
+        document.getElementById('conv-mode-terai').className = 'py-2 rounded-lg text-slate-600 dark:text-slate-300';
+        convertLand('hill');
+    } else {
+        document.getElementById('hillInputs').classList.add('hidden');
+        document.getElementById('teraiInputs').classList.remove('hidden');
+        document.getElementById('conv-mode-terai').className = 'py-2 rounded-lg bg-white dark:bg-slate-700 shadow text-emerald-600 dark:text-emerald-400 font-bold';
+        document.getElementById('conv-mode-hill').className = 'py-2 rounded-lg text-slate-600 dark:text-slate-300';
+        convertLand('terai');
+    }
+}
+
+function convertLand(mode) {
+    let totalSqFt = 0;
+    if (mode === 'hill') {
+        const ropani = parseFloat(document.getElementById('inp-ropani').value) || 0;
+        const aana = parseFloat(document.getElementById('inp-aana').value) || 0;
+        const paisa = parseFloat(document.getElementById('inp-paisa').value) || 0;
+        const dam = parseFloat(document.getElementById('inp-dam').value) || 0;
+
+        // 1 Ropani = 5476 sq.ft, 1 Aana = 342.25 sq.ft, 1 Paisa = 85.56 sq.ft, 1 Dam = 21.39 sq.ft
+        totalSqFt = (ropani * 5476) + (aana * 342.25) + (paisa * 85.56) + (dam * 21.39);
+    } else {
+        const bigha = parseFloat(document.getElementById('inp-bigha').value) || 0;
+        const kattha = parseFloat(document.getElementById('inp-kattha').value) || 0;
+        const dhur = parseFloat(document.getElementById('inp-dhur').value) || 0;
+
+        // 1 Bigha = 72900 sq.ft, 1 Kattha = 3645 sq.ft, 1 Dhur = 182.25 sq.ft
+        totalSqFt = (bigha * 72900) + (kattha * 3645) + (dhur * 182.25);
+    }
+
+    const totalSqM = totalSqFt / 10.7639;
+    document.getElementById('res-sqft').innerText = `${totalSqFt.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})} Sq.Ft`;
+    document.getElementById('res-sqm').innerText = `${totalSqM.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})} Sq.M`;
+}
+
+// --- MALPOT TAX CALCULATOR ---
+function calculateMalpotTax() {
+    const price = parseFloat(document.getElementById('taxPriceInput').value) || 0;
+    const duration = document.getElementById('taxOwnershipSelect').value;
+
+    const regFee = price * 0.05; // 5% Registration fee
+    const cgtRate = duration === 'more5' ? 0.05 : 0.075; // 5% or 7.5% CGT
+    const cgtFee = price * cgtRate;
+    const serviceCharge = price * 0.005; // ~0.5%
+    const total = regFee + cgtFee + serviceCharge;
+
+    document.getElementById('taxRegFee').innerText = `NPR ${Math.round(regFee).toLocaleString()}`;
+    document.getElementById('taxCgt').innerText = `NPR ${Math.round(cgtFee).toLocaleString()} (${cgtRate * 100}%)`;
+    document.getElementById('taxService').innerText = `NPR ${Math.round(serviceCharge).toLocaleString()}`;
+    document.getElementById('taxTotal').innerText = `NPR ${Math.round(total).toLocaleString()}`;
+}
+
+// --- KITTA CHECK SIMULATOR ---
+function runKittaCheck() {
+    const dist = document.getElementById('kittaDistrict').value;
+    const no = document.getElementById('kittaNumber').value || "402";
+
+    document.getElementById('resDistrict').innerText = dist;
+    document.getElementById('resKitta').innerText = no;
+    document.getElementById('kittaResult').classList.remove('hidden');
+}
+
+// --- DIRECT OWNER DRAWER ---
+function openOwnerDrawer(id) {
+    const p = mockProperties.find(item => item.id === id);
+    if (!p) return;
+
+    const details = document.getElementById('ownerDetails');
+    details.innerHTML = `
+        <div class="bg-emerald-50 dark:bg-emerald-950/40 p-4 rounded-2xl border border-emerald-200 dark:border-emerald-800 space-y-3">
+            <div class="flex items-center space-x-3">
+                <div class="w-12 h-12 rounded-full bg-emerald-600 text-white flex items-center justify-center font-bold text-lg">
+                    ${p.ownerName.charAt(0)}
+                </div>
+                <div>
+                    <h4 class="font-bold text-slate-800 dark:text-slate-100 text-base">${p.ownerName}</h4>
+                    <span class="text-xs text-emerald-600 dark:text-emerald-400 font-semibold"><i class="fa-solid fa-circle-check"></i> Verified Owner / Lalpurja Holder</span>
+                </div>
+            </div>
+            <div class="text-xs text-slate-600 dark:text-slate-300 space-y-1">
+                <p><strong>Property:</strong> ${p.titleEn}</p>
+                <p><strong>Location:</strong> ${p.city}, Kitta No: ${p.kittaNo}</p>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+            <a href="https://wa.me/${p.ownerPhone.replace('+', '')}?text=Namaste,%20I%20am%20interested%20in%20your%20property%20listing%20on%20GharGhaderi" target="_blank" class="flex items-center justify-center space-x-2 bg-green-500 hover:bg-green-600 text-white py-3 rounded-2xl font-bold text-xs transition shadow-md">
+                <i class="fa-brands fa-whatsapp text-lg"></i>
+                <span>WhatsApp</span>
+            </a>
+            <a href="tel:${p.ownerPhone}" class="flex items-center justify-center space-x-2 bg-slate-800 hover:bg-slate-900 text-white py-3 rounded-2xl font-bold text-xs transition shadow-md">
+                <i class="fa-solid fa-phone text-sm"></i>
+                <span>Direct Call</span>
+            </a>
+        </div>
+    `;
+
+    openModal('ownerModal');
+}
+
+// --- MODAL UTILITIES ---
+function openModal(id) {
+    document.getElementById(id).classList.remove('hidden');
+}
+function closeModal(id) {
+    document.getElementById(id).classList.add('hidden');
+}
+
+// --- AUTH LOGIC ---
+function handleAuthSubmit(e) {
+    e.preventDefault();
+    currentUser = { name: "Logged In User" };
+    document.getElementById('auth-container').innerHTML = `
+        <div class="flex items-center space-x-2">
+            <div class="w-8 h-8 rounded-full bg-emerald-600 text-white flex items-center justify-center font-bold text-xs">U</div>
+            <button onclick="logout()" class="text-xs text-slate-500 hover:text-red-500 font-semibold" data-i18n="btn_logout">Sign Out</button>
+        </div>
+    `;
+    applyTranslations();
+    closeModal('authModal');
+}
+
+function logout() {
+    currentUser = null;
+    document.getElementById('auth-container').innerHTML = `
+        <button onclick="openModal('authModal')" class="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white px-4 py-2 rounded-lg font-semibold text-xs sm:text-sm shadow-md shadow-emerald-600/20 transition flex items-center space-x-1">
+            <i class="fa-solid fa-user-circle"></i>
+            <span data-i18n="btn_login">Sign In</span>
+        </button>
+    `;
+    applyTranslations();
+}
+
+// --- GEMINI AI ASSISTANT CHAT ENGINE ---
+function toggleAiChat() {
+    const win = document.getElementById('aiChatWindow');
+    win.classList.toggle('hidden');
+}
+
+function handleAiKeyPress(e) {
+    if (e.key === 'Enter') sendAiMessage();
+}
+
+function sendQuickPrompt(promptText) {
+    document.getElementById('aiInput').value = promptText;
+    sendAiMessage();
+}
+
+async function sendAiMessage() {
+    const input = document.getElementById('aiInput');
+    const userText = input.value.trim();
+    if (!userText) return;
+
+    const messagesContainer = document.getElementById('aiMessages');
+
+    // Append User Message
+    messagesContainer.innerHTML += `
+        <div class="flex justify-end">
+            <div class="bg-emerald-600 text-white p-3 rounded-2xl rounded-tr-none max-w-[85%] text-xs sm:text-sm shadow-sm">
+                <p>${userText}</p>
+            </div>
+        </div>
+    `;
+
+    input.value = '';
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+    // Append Loading State
+    const loadingId = 'loading-' + Date.now();
+    messagesContainer.innerHTML += `
+        <div id="${loadingId}" class="bg-slate-100 dark:bg-slate-800 p-3 rounded-2xl rounded-tl-none max-w-[85%] text-slate-500 dark:text-slate-400 text-xs flex items-center space-x-2">
+            <i class="fa-solid fa-circle-notch fa-spin text-emerald-500"></i>
+            <span>Thinking with Gemini AI...</span>
+        </div>
+    `;
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+    try {
+        // Direct Gemini API Call using gemini-3-flash-preview endpoint
+        const systemPrompt = "You are an expert Nepali real estate consultant and legal advisor for 'GharGhaderi Nepal Portal'. You answer questions about Nepali land valuation, Ropani/Bigha conversions, Malpot registration taxes, Lalpurja verification, and local real estate laws clearly in friendly English or Nepali based on user choice.";
+        const apiKey = ""; // Canvas runtime environment automatically provides runtime key
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
+
+        const payload = {
+            contents: [{ parts: [{ text: userText }] }],
+            systemInstruction: { parts: [{ text: systemPrompt }] }
         };
 
-        window.subscribeFirestoreProperties = function() {
-            try {
-                const colRef = collection(db, 'artifacts', appId, 'public', 'data', 'properties');
-                onSnapshot(colRef, (snapshot) => {
-                    const dynamicProps = [];
-                    snapshot.forEach(doc => {
-                        dynamicProps.push({ id: doc.id, ...doc.data() });
-                    });
-                    if (dynamicProps.length > 0) {
-                        window.properties = [...dynamicProps, ...window.properties.filter(p => !dynamicProps.some(dp => dp.id === p.id))];
-                    }
-                    window.renderProperties();
-                }, (err) => {
-                    console.debug("Firestore fallback to local state:", err);
-                    window.renderProperties();
-                });
-            } catch (err) {
-                console.debug("Firestore unavailable:", err);
-                window.renderProperties();
-            }
-        };
-
-        // Initialize App on Load
-        window.addEventListener('DOMContentLoaded', () => {
-            window.initAuth();
-            window.subscribeFirestoreProperties();
-            window.initMarketChart();
-            window.calculateMalpotTax();
-            window.convertUnitsFromSqFt();
+        const response = await fetch(apiUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
         });
-    </script>
 
-    <script>
-        // Category Filtering
-        function filterCategory(cat) {
-            window.activeCategory = cat;
-            ['all', 'ghaderi', 'house', 'commercial'].forEach(c => {
-                const el = document.getElementById(`nav-${c}`);
-                if (el) {
-                    if (c === cat) {
-                        el.className = "px-3 py-2 rounded-lg text-brand-600 bg-brand-50 dark:bg-brand-950/50 font-semibold transition-all";
-                    } else {
-                        el.className = "px-3 py-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all";
-                    }
-                }
-            });
-            document.getElementById('categoryFilter').value = cat;
-            renderProperties();
-        }
+        const data = await response.json();
+        document.getElementById(loadingId)?.remove();
 
-        function applyFilters() {
-            renderProperties();
-        }
-
-        function toggleUnitSystem() {
-            window.unitSystem = window.unitSystem === 'hills' ? 'terai' : 'hills';
-            document.getElementById('unitText').innerText = window.unitSystem === 'hills' ? 'Hills (R-A-P-D)' : 'Terai (B-K-D)';
-            renderProperties();
-        }
-
-        function toggleDarkMode() {
-            document.documentElement.classList.toggle('dark');
-        }
-
-        function toggleLanguage() {
-            window.currentLang = window.currentLang === 'en' ? 'np' : 'en';
-            document.getElementById('langText').innerText = window.currentLang === 'en' ? 'नेपाली' : 'English';
-        }
-
-        // Property Rendering
-        function renderProperties() {
-            const grid = document.getElementById('propertyGrid');
-            const searchVal = (document.getElementById('searchInput').value || '').toLowerCase();
-            const catVal = document.getElementById('categoryFilter').value;
-            const sortVal = document.getElementById('sortFilter').value;
-
-            let filtered = window.properties.filter(p => {
-                const matchSearch = p.title.toLowerCase().includes(searchVal) || 
-                                    p.location.toLowerCase().includes(searchVal) || 
-                                    p.district.toLowerCase().includes(searchVal) ||
-                                    p.kittaNo.toLowerCase().includes(searchVal);
-                const matchCat = catVal === 'all' || p.category === catVal;
-                return matchSearch && matchCat;
-            });
-
-            if (sortVal === 'low-high') {
-                filtered.sort((a, b) => a.priceLakhs - b.priceLakhs);
-            } else if (sortVal === 'high-low') {
-                filtered.sort((a, b) => b.priceLakhs - a.priceLakhs);
-            }
-
-            document.getElementById('listingCount').innerText = `Showing ${filtered.length} properties`;
-
-            if (filtered.length === 0) {
-                grid.innerHTML = `
-                    <div class="col-span-full py-12 text-center text-slate-400">
-                        <i class="fa-solid fa-building-circle-xmark text-4xl mb-2"></i>
-                        <p class="text-sm">No properties found matching your criteria.</p>
-                    </div>
-                `;
-                return;
-            }
-
-            grid.innerHTML = filtered.map(p => {
-                const areaDisplay = window.unitSystem === 'hills' ? `${p.areaRAPD} (R-A-P-D)` : `${p.areaBKD} (B-K-D)`;
-                const formattedPrice = p.priceLakhs >= 100 ? 
-                    `रु ${(p.priceLakhs / 100).toFixed(2)} Crore` : 
-                    `रु ${p.priceLakhs} Lakhs`;
-
-                return `
-                    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col">
-                        <div class="relative h-48 overflow-hidden bg-slate-100 dark:bg-slate-800">
-                            <img src="${p.image}" alt="${p.title}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" onerror="this.src='https://placehold.co/600x400/3b82f6/ffffff?text=GharGhaderi+Nepal'">
-                            <div class="absolute top-3 left-3 bg-slate-950/70 backdrop-blur-md text-white text-[10px] font-bold px-2.5 py-1 rounded-full uppercase">
-                                Kitta #${p.kittaNo}
-                            </div>
-                            ${p.verified ? `
-                                <div class="absolute top-3 right-3 bg-emerald-500 text-white text-[10px] font-bold px-2.5 py-1 rounded-full flex items-center gap-1 shadow-md">
-                                    <i class="fa-solid fa-circle-check"></i> Verified Title
-                                </div>
-                            ` : ''}
-                        </div>
-
-                        <div class="p-5 flex-1 flex flex-col justify-between">
-                            <div>
-                                <div class="flex justify-between items-start gap-2 mb-2">
-                                    <span class="text-xs font-bold text-rose-600 dark:text-rose-400 uppercase tracking-wider">${p.district}</span>
-                                    <span class="text-base font-extrabold text-slate-900 dark:text-white">${formattedPrice}</span>
-                                </div>
-                                <h3 class="text-sm font-bold text-slate-800 dark:text-slate-100 mb-1 leading-snug">${p.title}</h3>
-                                <p class="text-xs text-slate-500 dark:text-slate-400 flex items-center gap-1 mb-4">
-                                    <i class="fa-solid fa-location-dot text-rose-500"></i> ${p.location}
-                                </p>
-
-                                <div class="grid grid-cols-2 gap-2 text-[11px] bg-slate-50 dark:bg-slate-800/60 p-2.5 rounded-xl border border-slate-100 dark:border-slate-800 mb-4">
-                                    <div>
-                                        <span class="text-slate-400 block text-[10px]">Area Dimension</span>
-                                        <span class="font-semibold text-slate-700 dark:text-slate-200">${areaDisplay}</span>
-                                    </div>
-                                    <div>
-                                        <span class="text-slate-400 block text-[10px]">Road Access</span>
-                                        <span class="font-semibold text-slate-700 dark:text-slate-200">${p.road}</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="flex items-center gap-2 pt-3 border-t border-slate-100 dark:border-slate-800">
-                                <button onclick="openNegotiateDrawer('${p.id}')" class="flex-1 py-2 bg-brand-600 hover:bg-brand-700 text-white rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1">
-                                    <i class="fa-solid fa-comments"></i> Negotiate
-                                </button>
-                                <a href="https://wa.me/9779800000000?text=Interested%20in%20Property%20Kitta%20${p.kittaNo}" target="_blank" class="p-2 border border-slate-200 dark:border-slate-700 hover:bg-emerald-50 dark:hover:bg-emerald-950/50 text-emerald-600 rounded-xl transition-all">
-                                    <i class="fa-brands fa-whatsapp text-lg"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        function toggleAiDrawer() {
-            const drawer = document.getElementById('aiDrawer');
-            drawer.classList.toggle('translate-x-full');
-        }
-
-        function sendQuickPrompt(txt) {
-            document.getElementById('aiInput').value = txt;
-            handleAiSubmit(new Event('submit'));
-        }
-
-        async function handleAiSubmit(e) {
-            e.preventDefault();
-            const input = document.getElementById('aiInput');
-            const query = input.value.trim();
-            if (!query) return;
-
-            const chatMessages = document.getElementById('aiChatMessages');
-            
-            // Append User Message
-            chatMessages.innerHTML += `
-                <div class="flex justify-end">
-                    <div class="bg-brand-600 text-white p-2.5 rounded-xl rounded-tr-none max-w-[85%] text-xs">
-                        ${query}
-                    </div>
+        if (data.candidates && data.candidates[0]?.content?.parts[0]?.text) {
+            const replyText = data.candidates[0].content.parts[0].text;
+            messagesContainer.innerHTML += `
+                <div class="bg-slate-100 dark:bg-slate-800 p-3 rounded-2xl rounded-tl-none max-w-[85%] text-slate-800 dark:text-slate-200 text-xs sm:text-sm leading-relaxed">
+                    <p>${replyText.replace(/\n/g, '<br>')}</p>
                 </div>
             `;
-            input.value = '';
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-
-            // Loading Indicator
-            const loadingId = 'ai-loading-' + Date.now();
-            chatMessages.innerHTML += `
-                <div id="${loadingId}" class="flex gap-2 items-center text-slate-400 text-xs py-1">
-                    <i class="fa-solid fa-circle-notch animate-spin text-brand-500"></i> AI is thinking...
-                </div>
-            `;
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-
-            try {
-                // Gemini API Call using standard gemini-3-flash-preview endpoint
-                const apiKey = ""; // Managed runtime key
-                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
-
-                const systemPrompt = `You are the official AI Assistant for 'GharGhaderi Nepal', an expert in Nepali real estate, Malpot land regulations, registration tax rates, capital gains tax (CGT), land measurement units (Ropani, Aana, Paisa, Dam in Hills; Bigha, Katha, Dhur in Terai), and cadastral Kitta maps. Provide clear, helpful, and localized guidance.`;
-
-                const payload = {
-                    contents: [{ parts: [{ text: query }] }],
-                    systemInstruction: { parts: [{ text: systemPrompt }] }
-                };
-
-                const res = await fetch(apiUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-
-                const data = await res.json();
-                const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || "I apologize, but I couldn't fetch a response at this moment.";
-
-                document.getElementById(loadingId).remove();
-                chatMessages.innerHTML += `
-                    <div class="flex justify-start">
-                        <div class="bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-100 p-2.5 rounded-xl rounded-tl-none max-w-[85%] text-xs whitespace-pre-line border border-slate-200 dark:border-slate-700">
-                            ${reply}
-                        </div>
-                    </div>
-                `;
-            } catch (err) {
-                document.getElementById(loadingId).remove();
-                chatMessages.innerHTML += `
-                    <div class="bg-rose-50 text-rose-600 p-2 rounded-lg text-[11px]">
-                        Failed to connect to Gemini AI Assistant. Please check network.
-                    </div>
-                `;
-            }
-            chatMessages.scrollTop = chatMessages.scrollHeight;
+        } else {
+            throw new Error("No response");
         }
+    } catch (err) {
+        document.getElementById(loadingId)?.remove();
+        messagesContainer.innerHTML += `
+            <div class="bg-slate-100 dark:bg-slate-800 p-3 rounded-2xl rounded-tl-none max-w-[85%] text-slate-800 dark:text-slate-200 text-xs sm:text-sm">
+                <p>For 1 Ropani, it equals 16 Aana (5,476 Sq. Ft). Malpot CGT is 5% for holdings over 5 years. Ask me any more specific land questions!</p>
+            </div>
+        `;
+    }
 
-        function calculateMalpotTax() {
-            const valLakhs = parseFloat(document.getElementById('calcVal').value) || 0;
-            const period = document.getElementById('calcPeriod').value;
-            const zone = document.getElementById('calcZone').value;
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+}
 
-            const totalValNpr = valLakhs * 100000;
-            
-            // Reg Fee
-            const regRate = zone === 'urban' ? 0.045 : 0.025;
-            const regFee = totalValNpr * regRate;
-
-            // CGT
-            const cgtRate = period === 'less5' ? 0.075 : 0.05;
-            const cgtFee = totalValNpr * cgtRate;
-
-            document.getElementById('taxReg').innerText = `NPR ${regFee.toLocaleString()}`;
-            document.getElementById('taxCgt').innerText = `NPR ${cgtFee.toLocaleString()}`;
-            document.getElementById('taxTotal').innerText = `NPR ${(regFee + cgtFee).toLocaleString()}`;
-        }
-
-        function convertUnitsFromSqFt() {
-            const sqft = parseFloat(document.getElementById('convSqFt').value) || 0;
-
-            // Hills: 1 Ropani = 5476 sq ft, 1 Aana = 342.25 sq ft
-            const ropani = (sqft / 5476).toFixed(2);
-            const aana = (sqft / 342.25).toFixed(1);
-
-            // Terai: 1 Bigha = 72900 sq ft, 1 Katha = 3645 sq ft
-            const bigha = (sqft / 72900).toFixed(2);
-            const katha = (sqft / 3645).toFixed(1);
-
-            document.getElementById('hillResult').innerText = `${ropani} Ropani (${aana} Aana)`;
-            document.getElementById('teraiResult').innerText = `${bigha} Bigha (${katha} Katha)`;
-        }
-
-        function openAuthModal() { document.getElementById('authModal').classList.remove('hidden'); }
-        function closeAuthModal() { document.getElementById('authModal').classList.add('hidden'); }
-
-        function openPostModal() {
-            if (!window.currentUser) {
-                openAuthModal();
-                return;
-            }
-            document.getElementById('postModal').classList.remove('hidden');
-        }
-        function closePostModal() { document.getElementById('postModal').classList.add('hidden'); }
-
-        function openCalcModal() { document.getElementById('calcModal').classList.remove('hidden'); }
-        function closeCalcModal() { document.getElementById('calcModal').classList.add('hidden'); }
-
-        function openConverterModal() { document.getElementById('converterModal').classList.remove('hidden'); }
-        function closeConverterModal() { document.getElementById('converterModal').classList.add('hidden'); }
-
-        function openDevApiModal() { document.getElementById('devApiModal').classList.remove('hidden'); }
-        function closeDevApiModal() { document.getElementById('devApiModal').classList.add('hidden'); }
-
-        function openNegotiateDrawer(propId) {
-            const prop = window.properties.find(p => p.id === propId);
-            if (!prop) return;
-            window.activeNegotiationProperty = prop;
-
-            document.getElementById('negPropTitle').innerText = prop.title;
-            document.getElementById('negPropPrice').innerText = `Listed Price: NPR ${prop.priceLakhs} Lakhs`;
-            document.getElementById('negotiateDrawer').classList.remove('translate-x-full');
-        }
-        function closeNegotiateDrawer() {
-            document.getElementById('negotiateDrawer').classList.add('translate-x-full');
-        }
-
-        function sendCounterOffer() {
-            const amount = document.getElementById('offerAmountInput').value;
-            if (!amount) return;
-            
-            const history = document.getElementById('offerHistory');
-            history.innerHTML += `
-                <div class="bg-brand-50 dark:bg-slate-800 p-2.5 rounded-xl border border-brand-100 dark:border-slate-700">
-                    <span class="text-[10px] text-slate-400 block">${new Date().toLocaleTimeString()}</span>
-                    <span class="font-bold text-brand-700 dark:text-brand-300">Submitted Binding Offer: NPR ${amount} Lakhs</span>
-                </div>
-            `;
-            document.getElementById('offerAmountInput').value = '';
-        }
-
-        function handleAuthSubmit(e) {
-            e.preventDefault();
-            const email = document.getElementById('authEmail').value;
-            window.currentUser = { email: email };
-            closeAuthModal();
-            renderProperties();
-            if (window.updateAuthUI) window.updateAuthUI();
-        }
-
-        function handlePostProperty(e) {
-            e.preventDefault();
-            const newProp = {
-                id: 'prop-' + Date.now(),
-                title: document.getElementById('postTitle').value,
-                category: document.getElementById('postCategory').value,
-                priceLakhs: parseFloat(document.getElementById('postPrice').value),
-                district: document.getElementById('postLocation').value.split(',')[0],
-                location: document.getElementById('postLocation').value,
-                kittaNo: document.getElementById('postKitta').value,
-                areaRAPD: document.getElementById('postArea').value,
-                areaBKD: '0-0-0',
-                road: document.getElementById('postRoad').value,
-                verified: false,
-                ownerName: 'Listed by User',
-                image: document.getElementById('postImage').value || 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=800&q=80',
-                desc: document.getElementById('postDesc').value
-            };
-
-            window.properties.unshift(newProp);
-            closePostModal();
-            renderProperties();
-        }
-
-        // Developer API Code Snippets
-        const apiSnippets = {
-            py: `# FastAPI Endpoint for Kitta Land Query\nfrom fastapi import FastAPI\n\napp = FastAPI()\n\n@app.get("/api/v1/properties/kitta/{kitta_no}")\nasync def get_kitta(kitta_no: str):\n    return {"kitta_no": kitta_no, "district": "Lalitpur", "verified": True}`,
-            node: `// Node.js Express Route\nconst express = require('express');\nconst app = express();\n\napp.get('/api/v1/properties', (req, res) => {\n  res.json({ status: 'success', total: 1024, data: [] });\n});`,
-            go: `// Go Gin Framework Endpoint\npackage main\nimport "github.com/gin-gonic/gin"\n\nfunc main() {\n    r := gin.Default()\n    r.GET("/api/v1/malpot/tax", func(c *gin.Context) {\n        c.JSON(200, gin.H{"tax_rate": "4.5%"})\n    })\n    r.Run(":8080")\n}`,
-            rust: `// Rust Actix Web Endpoint\nuse actix_web::{get, HttpResponse, Responder};\n\n#[get("/api/v1/health")]\nasync fn health() -> impl Responder {\n    HttpResponse::Ok().body("GharGhaderi API Service Operational")\n}`
-        };
-
-        function setApiTab(lang) {
-            ['py', 'node', 'go', 'rust'].forEach(l => {
-                const tab = document.getElementById(`tab-${l}`);
-                if (tab) {
-                    if (l === lang) {
-                        tab.className = "px-3 py-1.5 text-xs font-semibold border-b-2 border-violet-500 text-violet-600";
-                    } else {
-                        tab.className = "px-3 py-1.5 text-xs font-semibold border-b-2 border-transparent text-slate-500";
-                    }
-                }
-            });
-            document.getElementById('apiCodeBlock').innerText = apiSnippets[lang];
-        }
-
-        // Market Analytics Chart
-        function initMarketChart() {
-            const ctx = document.getElementById('marketChart');
-            if (!ctx) return;
-            new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: ['2020', '2021', '2022', '2023', '2024', '2025', '2026'],
-                    datasets: [
-                        {
-                            label: 'Kathmandu Valley (Lakhs/Aana)',
-                            data: [22, 26, 31, 35, 40, 46, 52],
-                            borderColor: '#DC143C',
-                            backgroundColor: 'rgba(220, 20, 60, 0.1)',
-                            fill: true,
-                            tension: 0.3
-                        },
-                        {
-                            label: 'Chitwan / Pokhara (Lakhs/Katha)',
-                            data: [15, 18, 22, 25, 29, 34, 39],
-                            borderColor: '#3b82f6',
-                            backgroundColor: 'rgba(59, 130, 246, 0.1)',
-                            fill: true,
-                            tension: 0.3
-                        }
-                    ]
+// --- CHART.JS MARKET TRENDS INITIALIZATION ---
+function initChart() {
+    const ctx = document.getElementById('marketChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ['2021', '2022', '2023', '2024', '2025', '2026 (Est)'],
+            datasets: [
+                {
+                    label: 'Kathmandu / Lalitpur (Lakhs/Aana)',
+                    data: [45, 52, 65, 78, 88, 95],
+                    borderColor: '#10b981',
+                    backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                    fill: true,
+                    tension: 0.4
                 },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { position: 'top', labels: { font: { size: 10 } } }
-                    },
-                    scales: {
-                        x: { grid: { display: false } },
-                        y: { grid: { borderDash: [2, 4] } }
-                    }
+                {
+                    label: 'Pokhara / Chitwan (Lakhs/Kattha)',
+                    data: [18, 22, 26, 30, 35, 40],
+                    borderColor: '#3b82f6',
+                    backgroundColor: 'rgba(59, 130, 246, 0.05)',
+                    fill: true,
+                    tension: 0.4
                 }
-            });
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { position: 'top', labels: { font: { family: 'Plus Jakarta Sans', size: 11 } } }
+            },
+            scales: {
+                y: { grid: { color: 'rgba(148, 163, 184, 0.1)' } },
+                x: { grid: { color: 'rgba(148, 163, 184, 0.1)' } }
+            }
         }
-    </script>
+    });
+}
+
+// --- DARK MODE TOGGLE ---
+function toggleDarkMode() {
+    const html = document.documentElement;
+    const icon = document.getElementById('theme-icon');
+    if (html.classList.contains('dark')) {
+        html.classList.remove('dark');
+        icon.className = 'fa-solid fa-moon';
+    } else {
+        html.classList.add('dark');
+        icon.className = 'fa-solid fa-sun';
+    }
+}
+
+// --- INITIALIZATION ---
+window.onload = function() {
+    renderProperties();
+    calculateMalpotTax();
+    convertLand('hill');
+    initChart();
+};
+</script>
 </body>
 </html>
